@@ -4,7 +4,7 @@ Initially to be a WordPress plugin, now being written to work as either a WP plu
 
 **This is the dev branch - code form here will almost certainly not be usable in it's current state. Use at your own risk.**
 
-Images not committed as I did not create them, so I'm not sure if I can use them without permission. The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd).(16|32|64).png` with 16px being the default size.
+The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd).(16|32|64).png` with 16px being the default size. [Originals can be found here](http://vector.us/browse/253348/skype_status_icons).
 
 ## Introduction ##
 
