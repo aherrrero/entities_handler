@@ -9,6 +9,6 @@
 include 'skype.php';
 $WPSS = new WPSkypeStatus();
 
-echo $WPSS->skype(array('username'=>'dabennet-intergral'));
+echo $WPSS->skype();
 
 ?>
