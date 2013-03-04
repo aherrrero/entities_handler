@@ -6,7 +6,7 @@ Initially to be a WordPress plugin, now being written to work as either a WP plu
 
 The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd).(16|32|64).png` with 16px being the default size. [Originals can be found here](http://vector.us/browse/253348/skype_status_icons).
 
-## Introduction ##
+## About ##
 
 You can manually layout and write your own Skype Call links in WordPress, but doing that every time can be a hassle. The new Skype URI builder creates the link for you, including pulling the images from the Skype servers for you, but doesn't allow for any sort of differentiation between your Skype statuses - your users won't know if you're online, offline, away, etc.
 
