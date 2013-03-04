@@ -15,17 +15,10 @@ class WPSkypeStatus{
 			array_pop($_path);
 			$this->dirURL = '/'.implode('/', $_path);
 		}
-		if(function_exists("get_template_directory")){
-			$this->imgPath = array(
-				'abs'=>$this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'images', '')),
-				'uri'=>$this->dirURL."/images/"
-			);
-		} else {
-			$this->imgPath = array(
-				'abs'=>$this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'images', '')),
-				'uri'=>$this->dirURL."/images/"
-			);
-		}
+		$this->imgPath = array(
+			'abs'=>$this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'images', '')),
+			'uri'=>$this->dirURL."/images/"
+		);
 		if(function_exists("add_shortcode")){
 			add_shortcode('skype', array($this, 'skype'));
 		}
