@@ -1,8 +1,8 @@
 # WPSkypeStatus #
 
-A simple WordPress plugin to allow Skype call links anywhere you can use Shortcodes
+Initially to be a WordPress plugin, now being written to work as either a WP plugin or in any PHP project via a single `include` statement.
 
-*This is currently just a placeholder until I have something I feel is good enough to move from dev to Master*
+**This is the dev branch - code form here will almost certainly not be usable in it's current state. Use at your own risk.**
 
 ## Introduction ##
 
