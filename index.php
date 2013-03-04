@@ -9,6 +9,9 @@
 include 'skype.php';
 $WPSS = new WPSkypeStatus();
 
-echo $WPSS->skype();
+// example
+if(!defined("WP_PLUGIN_URL")){
+	echo $WPSS->skype();
+}
 
 ?>

@@ -24,7 +24,7 @@ class WPSkypeStatus{
 		}
 	}
 
-	public function skype($attributes){
+	public function skype($attributes = null){
 		$defaults = array(
 			'name'=>'Echo',
 			'username'=>'echo123',
