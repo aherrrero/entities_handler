@@ -46,6 +46,8 @@ class WPSkypeStatus{
 
 	// build and return Skype Call link
 	public function skype($attributes = null){
+		// dump if debug is enabled
+		if($this->_debug){ var_dump($attributes); var_dump($this->filter_atts($this->_attr, $attributes)); }
 		// get parameters
 		extract($this->filter_atts($this->_attr, $attributes));
 		// get status of the initial username
@@ -53,6 +55,8 @@ class WPSkypeStatus{
 		// if initial user isn't 'online' and backups are provided, check them
 		// defaults to user with lowest weighted status (see $_prio in conf.php)
 		if($backups && $_icon !== 'online'){
+			// dump if debug is enabled
+			if($this->_debug){ var_dump($backups); }
 			$backups = $this->array_trim(explode(',', $backups));
 			$_back = array();
 			// loop through all backup accounts getting their status
@@ -67,6 +71,8 @@ class WPSkypeStatus{
 				$_icon = $_back[1];
 			}
 		}
+		// dump if debug is enabled
+		if($this->_debug){ var_dump($username); var_dump($_icon); }
 		// check size of icon
 		$size = ((!file_exists($this->imgPath['abs'].$_icon.".".$size.'.png')) ? '16' : $size);
 		// build image URL
@@ -110,6 +116,8 @@ class WPSkypeStatus{
 		// check data for status code and return
 		$pattern = '/xml:lang="NUM">(.*)</';
 		preg_match($pattern, $data, $match);
+		// dump if debug is enabled
+		if($this->_debug){ var_dump($data); var_dump($match); }
 		return $match[1];
 	}
 
@@ -117,6 +125,8 @@ class WPSkypeStatus{
 	private function check_status_priority($users){
 		// only work on arrays
 		if(!is_array($users)){ return false; }
+		// dump if debug is enabled
+		if($this->_debug){ var_dump($users); }
 		// loop through all backup users
 		foreach ($users as $key => $value) {
 			// get status weight
@@ -129,6 +139,8 @@ class WPSkypeStatus{
 		}
 		// otherwise, sort by status weight and return the lowest
 		usort($users, array($this, 'sort_priority'));
+		// dump if debug is enabled
+		if($this->_debug){ var_dump($users); }
 		return array($users[0][0], $users[0][1]);
 	}
 
@@ -164,6 +176,8 @@ class WPSkypeStatus{
 			// trim every value
 			$array[$key] = trim($value);
 		}
+		// dump if debug is enabled
+		if($this->_debug){ var_dump($array); }
 		// return the result
 		return $array;
 	}
@@ -174,9 +188,15 @@ class WPSkypeStatus{
 	}
 
 	// enable debugging
-	// currently nothing is shown even when activated
-	public function debug(){
-		$this->_debug = true;
+	public function debug($state = false){
+		// ensure $state is only either true or false
+		$state = ($state === false ? false : true);
+		// set class debug state
+		$this->_debug = $state;
+		// echo current class variables
+		if($state){
+			echo "<pre>" . print_r($this, true) . "</pre>";
+		}
 	}
 }
 

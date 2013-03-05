@@ -11,7 +11,7 @@ $WPSS = new WPSkypeStatus();
 
 // example
 if(!defined("WP_PLUGIN_URL")){
-	// $WPSS->debug();
+	// $WPSS->debug(true);
 	echo $WPSS->skype();
 }
 
