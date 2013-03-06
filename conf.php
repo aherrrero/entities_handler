@@ -12,8 +12,9 @@ $defaults = array(
 */
 
 $_defaults = array(
-	'name'=>'Echo',
 	'username'=>'echo123',
+	'name'=>'Echo',
+	'type'=>'call',
 	'size'=>'16',
 	'backups'=>false
 );

@@ -77,10 +77,12 @@ class WPSkypeStatus{
 		$size = ((!file_exists($this->imgPath['abs'].$_icon.".".$size.'.png')) ? '16' : $size);
 		// build image URL
 		$_icon = $this->imgPath['uri'].$_icon.".".$size.".png";
-		// get user-specific class for elements
-		$_class_user = str_replace('.', '', strip_tags(trim($username)))."_".$size;
+		// get variable classes for elements
+		$_class_user = str_replace('.', '', strip_tags(trim($username)));
+		$_class_size = "size_".$size;
+		$type = ((strtolower($type) === 'call' || strtolower($type) === 'chat') ? strtolower($type) : 'call');
 		// return the HTML of the link
-		return "<div class='skype $_class_user'><a class='skype_link $_class_user' href='skype:$username?call'><span class='skype_icon $_class_user'><img src='$_icon' width='$size' height='$size' /></span><span class='skype_name $_class_user'>$name</span></a></div>";
+		return "<div class='skype $type $_class_user $_class_size'><a class='skype_link $_class_user $_class_size' href='skype:$username?$type'><span class='skype_icon $_class_user $_class_size'><img src='$_icon' width='$size' height='$size' /></span><span class='skype_name $_class_user $_class_size'>$name</span></a></div>";
 	}
 
 	// make a cURL request to the API
