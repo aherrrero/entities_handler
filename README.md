@@ -14,14 +14,18 @@ Thus, I decided to make a simple PHP Class that will create structured Skype cal
 
 In the order I'm going to work on them, the things I want to achieve before labelling this project as having reached version 1.0 - 
 
-1. Make default account easier to edit when working under PHP inclusion
-2. Use database when working as a WP plugin
-3. Add settings page to WP admin area when working as a plugin
-4. Write instructions for both PHP inclusion and WP plugin usage
+1. design tables
+2. add creation code to class
+3. write functions for getting and writing settings
+4. use either conf file or database for settings - nothing hard in class
+5. add sub-menu entry under Settings in WP admin
+6. page to show and edit all settings in database
 
 Things for after version 1.0 - 
 
-1. Make GitHub site for project
+1. PHP usage instructions
+2. WP usage instructions
+3. GitHub Pages site
 
 ## License ##
 
