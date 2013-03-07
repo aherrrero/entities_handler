@@ -1,5 +1,11 @@
 <?php
 
+// DEFAULT SETTINGS
+$_path = str_replace($_SERVER['DOCUMENT_ROOT'], "", $_SERVER['SCRIPT_FILENAME']);
+$_path = explode('/', $_path);
+array_pop($_path);
+$_dirURL = '/'.implode('/', $_path).'/';
+
 /*
 DEFAULT PARAMETERS
 
