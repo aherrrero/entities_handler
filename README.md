@@ -14,12 +14,9 @@ Thus, I decided to make a simple PHP Class that will create structured Skype cal
 
 In the order I'm going to work on them, the things I want to achieve before labelling this project as having reached version 1.0 - 
 
-1. design tables
-2. add creation code to class
-3. write functions for getting and writing settings
-4. use either conf file or database for settings - nothing hard in class
-5. add sub-menu entry under Settings in WP admin
-6. page to show and edit all settings in database
+1. write functions for getting and writing settings
+2. add sub-menu entry under Settings in WP admin
+3. page to show and edit all settings in database
 
 Things for after version 1.0 - 
 

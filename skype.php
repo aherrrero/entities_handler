@@ -19,29 +19,25 @@ class WPSkypeStatus{
 		// find absolute path to this file
 		$this->dirPath = dirname(__FILE__);
 		if($this->isWP){
-			// if WP plugin, use the WP_PLUGIN_URL constant for accuracy
+			// use the WP_PLUGIN_URL constant for accuracy
 			$this->dirURL = WP_PLUGIN_URL . '/WPSkypeStatus/';
+			// get settings from database
+			$this->get_wp_settings();
+			// register the shortcode
+			add_shortcode('skype', array($this, 'skype'));
 		} else {
-			// otherwise use $_SERVER values and remove the filename
-			$_path = str_replace($_SERVER['DOCUMENT_ROOT'], "", $_SERVER['SCRIPT_FILENAME']);
-			$_path = explode('/', $_path);
-			array_pop($_path);
-			$this->dirURL = '/'.implode('/', $_path);
+			// include conf file for default settings
+			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'conf.php'));
+			$this->dirURL = $_dirURL;
+			$this->_attr = $_defaults;
+			$this->_rules = $_rules;
+			$this->_prio = $_prio;
 		}
-		// include conf file for default arrays
-		include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'conf.php'));
-		$this->_attr = $_defaults;
-		$this->_rules = $_rules;
-		$this->_prio = $_prio;
 		// use $dirPath and $dirURL to get the paths for the images folder
 		$this->imgPath = array(
 			'abs'=>$this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'images', '')),
-			'uri'=>$this->dirURL."/images/"
+			'uri'=>$this->dirURL."images/"
 		);
-		// if WordPress plugin, register the shortcode
-		if($this->isWP){
-			add_shortcode('skype', array($this, 'skype'));
-		}
 	}
 
 	// build and return Skype Call link
@@ -74,7 +70,7 @@ class WPSkypeStatus{
 		// dump if debug is enabled
 		if($this->_debug){ var_dump($username); var_dump($_icon); }
 		// check size of icon
-		$size = ((!file_exists($this->imgPath['abs'].$_icon.".".$size.'.png')) ? '16' : $size);
+		$size = ((!file_exists($this->imgPath['abs'].$_icon.".".$size.'.png')) ? $this->_attr['size'] : $size);
 		// build image URL
 		$_icon = $this->imgPath['uri'].$_icon.".".$size.".png";
 		// get variable classes for elements
@@ -146,6 +142,50 @@ class WPSkypeStatus{
 		return array($users[0][0], $users[0][1]);
 	}
 
+	private function get_wp_settings(){
+		global $wpdb;
+		$this->create_wp_settings();
+		$sql = "SELECT `setting_name`, `setting_format`, `setting_value` FROM `skype_settings`;";
+		$results = $wpdb->get_results($sql);
+		if($results){
+			foreach ($results as $row) {
+				$this->{$row->setting_name} = (($row->setting_format === 'json') ? json_decode($row->setting_value) : $row->setting_value);
+			}
+			$sql = null;
+			$results = null;
+			return true;
+		}
+		$sql = null;
+		$results = null;
+		return false;
+	}
+
+	private function create_wp_settings(){
+		global $wpdb;
+		include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'conf.php'));
+		$sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `skype_settings` ("
+			." `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,"
+			." `setting_name` VARCHAR(10) NOT NULL,"
+			." `setting_format` VARCHAR(10) NOT NULL DEFAULT 'json',"
+			." `setting_value` TEXT NOT NULL,"
+			." PRIMARY KEY (`id`),"
+			." UNIQUE INDEX `name` (`setting_name`)"
+			." ) ENGINE=InnoDB;");
+		$result = $wpdb->query($sql);
+		$value = json_encode($_defaults);
+		$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_attr', 'json', '".$value."');";
+		$result = $wpdb->query($sql);
+		$value = json_encode($_rules);
+		$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_rules', 'json', '".$value."');";
+		$result = $wpdb->query($sql);
+		$value = json_encode($_prio);
+		$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_prio', 'json', '".$value."');";
+		$result = $wpdb->query($sql);
+		$value = null;
+		$sql = null;
+		$result = null;
+	}
+
 	// filter out non-standard arguments and use default values where necessary
 	private function filter_atts($pairs, $atts){
 		if($this->isWP){
@@ -190,14 +230,27 @@ class WPSkypeStatus{
 	}
 
 	// enable debugging
-	public function debug($state = false){
-		// ensure $state is only either true or false
+	public function debug($state = false, $return = false){
+		// ensure params are only either true or false
 		$state = ($state === false ? false : true);
+		$return = ($return === false ? false : true);
 		// set class debug state
 		$this->_debug = $state;
 		// echo current class variables
 		if($state){
-			echo "<pre>" . print_r($this, true) . "</pre>";
+			if($return){
+				return json_encode(array(
+					'isWP'=>$this->isWP,
+					'path'=>$this->dirPath,
+					'url'=>$this->dirURL,
+					'images'=>$this->imgPath,
+					'defaults'=>$this->_attr,
+					'rules'=>$this->_rules,
+					'weighting'=>$this->_prio
+				));
+			} else {
+				echo "<pre>" . print_r($this, true) . "</pre>";
+			}
 		}
 	}
 }
