@@ -13,7 +13,7 @@ class WPSkypeStatus{
 	// define values for all class variables
 	public function __construct(){
 		// debugging is off by default
-		$this->_debug = false;
+		$this->_debug = array(false, false, true);
 		// check if being used as a WordPress plugin
 		$this->isWP = defined("WP_PLUGIN_URL");
 		// find absolute path to this file
@@ -43,7 +43,7 @@ class WPSkypeStatus{
 	// build and return Skype Call link
 	public function skype($attributes = null){
 		// dump if debug is enabled
-		if($this->_debug){ var_dump($attributes); var_dump($this->filter_atts($this->_attr, $attributes)); }
+		$this->debug(array('attributes'=>$attributes, 'filtered'=>$this->filter_atts($this->_attr, $attributes)));
 		// get parameters
 		extract($this->filter_atts($this->_attr, $attributes));
 		// get status of the initial username
@@ -52,7 +52,7 @@ class WPSkypeStatus{
 		// defaults to user with lowest weighted status (see $_prio in conf.php)
 		if($backups && $_icon !== 'online'){
 			// dump if debug is enabled
-			if($this->_debug){ var_dump($backups); }
+			$this->debug($backups);
 			$backups = $this->array_trim(explode(',', $backups));
 			$_back = array();
 			// loop through all backup accounts getting their status
@@ -68,7 +68,7 @@ class WPSkypeStatus{
 			}
 		}
 		// dump if debug is enabled
-		if($this->_debug){ var_dump($username); var_dump($_icon); }
+		$this->debug(array('username'=>$username, 'status'=>$_icon));
 		// check size of icon
 		$size = ((!file_exists($this->imgPath['abs'].$_icon.".".$size.'.png')) ? $this->_attr['size'] : $size);
 		// build image URL
@@ -115,7 +115,7 @@ class WPSkypeStatus{
 		$pattern = '/xml:lang="NUM">(.*)</';
 		preg_match($pattern, $data, $match);
 		// dump if debug is enabled
-		if($this->_debug){ var_dump($data); var_dump($match); }
+		$this->debug(array('data'=>$data, 'matches'=>$match));
 		return $match[1];
 	}
 
@@ -124,7 +124,7 @@ class WPSkypeStatus{
 		// only work on arrays
 		if(!is_array($users)){ return false; }
 		// dump if debug is enabled
-		if($this->_debug){ var_dump($users); }
+		$this->debug($users);
 		// loop through all backup users
 		foreach ($users as $key => $value) {
 			// get status weight
@@ -138,7 +138,7 @@ class WPSkypeStatus{
 		// otherwise, sort by status weight and return the lowest
 		usort($users, array($this, 'sort_priority'));
 		// dump if debug is enabled
-		if($this->_debug){ var_dump($users); }
+		$this->debug($users);
 		return array($users[0][0], $users[0][1]);
 	}
 
@@ -150,6 +150,7 @@ class WPSkypeStatus{
 		if($results){
 			foreach ($results as $row) {
 				$this->{$row->setting_name} = (($row->setting_format === 'json') ? json_decode($row->setting_value) : $row->setting_value);
+				$this->debug(array('raw'=>$row->setting_value, 'parsed'=>$this->{$row->setting_name}));
 			}
 			$sql = null;
 			$results = null;
@@ -219,7 +220,7 @@ class WPSkypeStatus{
 			$array[$key] = trim($value);
 		}
 		// dump if debug is enabled
-		if($this->_debug){ var_dump($array); }
+		$this->debug($array);
 		// return the result
 		return $array;
 	}
@@ -230,27 +231,38 @@ class WPSkypeStatus{
 	}
 
 	// enable debugging
-	public function debug($state = false, $return = false){
+	public function set_debug($state = false, $return = false, $json = true){
 		// ensure params are only either true or false
 		$state = ($state === false ? false : true);
 		$return = ($return === false ? false : true);
+		$json = ($json === false ? false : true);
 		// set class debug state
-		$this->_debug = $state;
-		// echo current class variables
+		$this->_debug = array($state, $return, $json);
+		// output the stuff
 		if($state){
+			$stuff = array(
+				'isWP'=>$this->isWP,
+				'path'=>$this->dirPath,
+				'url'=>$this->dirURL,
+				'images'=>$this->imgPath,
+				'defaults'=>$this->_attr,
+				'rules'=>$this->_rules,
+				'weighting'=>$this->_prio
+			);
 			if($return){
-				return json_encode(array(
-					'isWP'=>$this->isWP,
-					'path'=>$this->dirPath,
-					'url'=>$this->dirURL,
-					'images'=>$this->imgPath,
-					'defaults'=>$this->_attr,
-					'rules'=>$this->_rules,
-					'weighting'=>$this->_prio
-				));
+				// return array or JSON object
+				return ($json) ? json_encode($stuff) : $stuff;
 			} else {
-				echo "<pre>" . print_r($this, true) . "</pre>";
+				// echo the array
+				$this->debug($stuff);
 			}
+		}
+	}
+	
+	// output debug data from class functions
+	private function debug($data){
+		if($this->_debug[0]){
+			echo "<pre>" . (($this->_debug[2]) ? print_r(json_encode($data), true) : print_r($data, true)) . "</pre>";
 		}
 	}
 }
