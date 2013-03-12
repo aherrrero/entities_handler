@@ -12,62 +12,11 @@ $_settings = $WPSS->set_debug(true, true, false);
 $WPSS->set_debug(false);
 
 function skype_admin_menu(){
-	add_management_page( 'Skype Options', 'Skype Options', 'manage_options', 'skype-options', 'skype_admin_page' );
+	add_management_page( 'Skype Options', 'Skype Options', 'manage_options', 'skype-options', 'skype_admin_setup' );
 }
 if($_settings['isWP']){
+	require_once $_settings['path'] . DIRECTORY_SEPARATOR . "skype.admin.php";
 	add_action('admin_menu', 'skype_admin_menu');
-}
-
-function skype_admin_page(){
-	global $_settings;
-	$_attr = $_settings['defaults'];
-	$_rules = $_settings['rules'];
-	$_prio = $_settings['weighting'];
-	?>
-	<div class='wrap'>
-		<div id="icon-tools" class="icon32"><br /></div>
-		<h2>Status-Aware Skype Link Settings</h2>
-		<div id='ajax-response'></div>
-		<br class="clear">
-		<p>Use this page to change the default settings for the Skype Link plugin without having to manually edit the <code>conf.php</code> file!</p>
-		<form name='skype_settings' id='skype_settings' action='' method='POST'>
-			<table class='form-table'>
-				<tbody>
-					<tr valign='top'>
-						<th scope='row'>
-							<label><strong>Default Attributes</strong></label>
-						</th>
-						<td>
-							<input type='text' class='regular-text ltr' name='_attr_username' id='_attr_username' <?php echo "value='".$_attr->username."'"; ?> />
-							<div id="_names">
-								<input type='text' class='regular-text ltr' name='_attr_name' id='_attr_name' <?php echo "value='".$_attr->name."'"; ?> />
-							</div>
-							<select id='_attr_type' name='_attr_type'>
-								<option value = 'call'<?php echo (strtolower($_attr->type) === 'call') ? " selected='selected'" : ""; ?>>Call</option>
-								<option value = 'chat'<?php echo (strtolower($_attr->type) === 'chat') ? " selected='selected'" : ""; ?>>Chat</option>
-							</select>
-							<div id="_backups">
-								<input type='text' class='regular-text ltr' name='_attr_backups' id='_attr_backups' <?php echo "value='".$_attr->backups."'"; ?> />
-							</div>
-						</td>
-					</tr>
-					<!-- <tr valign='top'>
-						<th scope='row'>
-							<label for=''></label>
-						</th>
-						<td>
-							<input type='text' class='regular-text ltr' name='' id='' value='<?php  ?>' />
-						</td>
-					</tr> -->
-				</tbody>
-			</table>
-			<p class='submit settings'>
-				<input type='submit' name='settings_save' id='settings_save' class='button-primary' value='Save Changes' />
-				<input type='button' name='cancel_save' id='cancel_save' class='button cancel' value='Cancel' />
-			</p>
-		</form>
-	</div>
-	<?php
 }
 
 // example
