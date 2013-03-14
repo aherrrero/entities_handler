@@ -14,9 +14,13 @@ $WPSS->set_debug(false);
 function skype_admin_menu(){
 	add_management_page( 'Skype Options', 'Skype Options', 'manage_options', 'skype-options', 'skype_admin_setup' );
 }
+function admin_js(){
+	wp_enqueue_script( 'skype.admin', WP_PLUGIN_URL . '/WPSkypeStatus/_admin/skype.admin.js', array( 'jquery' ) );
+}
 if($_settings['isWP']){
-	require_once $_settings['path'] . DIRECTORY_SEPARATOR . "skype.admin.php";
+	require_once $_settings['path'] . implode(DIRECTORY_SEPARATOR, array('', '_admin', 'skype.admin.php'));
 	add_action('admin_menu', 'skype_admin_menu');
+	add_action( 'in_admin_footer', 'admin_js', 11 );
 }
 
 // example

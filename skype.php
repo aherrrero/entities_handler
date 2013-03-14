@@ -15,7 +15,7 @@ class WPSkypeStatus{
 		// debugging is off by default
 		$this->_debug = array(false, false, true);
 		// check if being used as a WordPress plugin
-		$this->isWP = defined("WP_PLUGIN_URL");
+		$this->isWP = defined("WPLANG");
 		// find absolute path to this file
 		$this->dirPath = dirname(__FILE__);
 		if($this->isWP){
@@ -27,7 +27,7 @@ class WPSkypeStatus{
 			add_shortcode('skype', array($this, 'skype'));
 		} else {
 			// include conf file for default settings
-			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'conf.php'));
+			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', '_admin', 'conf.php'));
 			$this->dirURL = $_dirURL;
 			$this->_attr = $_defaults;
 			$this->_rules = $_rules;
@@ -50,7 +50,7 @@ class WPSkypeStatus{
 		$_icon = $this->_rules[$this->get_skype_status($username)];
 		// if initial user isn't 'online' and backups are provided, check them
 		// defaults to user with lowest weighted status (see $_prio in conf.php)
-		if($backups && $_icon !== 'online'){
+		if($backups !== "false" && $_icon !== 'online'){
 			// dump if debug is enabled
 			$this->debug($backups);
 			$backups = $this->array_trim(explode(',', $backups));
@@ -142,49 +142,93 @@ class WPSkypeStatus{
 		return array($users[0][0], $users[0][1]);
 	}
 
+	private function create_wp_settings(){
+		global $wpdb;
+		$sql = "SHOW TABLES LIKE 'skype_settings';";
+		$wpdb->query($sql);
+		if($this->isWP && $wpdb->num_rows > 0){
+			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', '_admin', 'conf.php'));
+			$sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `skype_settings` ("
+				." `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,"
+				." `setting_name` VARCHAR(10) NOT NULL,"
+				." `setting_format` VARCHAR(10) NOT NULL DEFAULT 'json',"
+				." `setting_value` TEXT NOT NULL,"
+				." PRIMARY KEY (`id`),"
+				." UNIQUE INDEX `name` (`setting_name`)"
+				." ) ENGINE=InnoDB;");
+			$result = $wpdb->query($sql);
+			$value = json_encode($_defaults);
+			$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_attr', 'json', '".$value."');";
+			$result = $wpdb->query($sql);
+			$value = json_encode($_rules);
+			$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_rules', 'json', '".$value."');";
+			$result = $wpdb->query($sql);
+			$value = json_encode($_prio);
+			$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_prio', 'json', '".$value."');";
+			$result = $wpdb->query($sql);
+			$value = null;
+			$sql = null;
+			$result = null;
+		}
+	}
+
 	private function get_wp_settings(){
 		global $wpdb;
-		$this->create_wp_settings();
-		$sql = "SELECT `setting_name`, `setting_format`, `setting_value` FROM `skype_settings`;";
-		$results = $wpdb->get_results($sql);
-		if($results){
-			foreach ($results as $row) {
-				$this->{$row->setting_name} = (($row->setting_format === 'json') ? json_decode($row->setting_value) : $row->setting_value);
-				$this->debug(array('raw'=>$row->setting_value, 'parsed'=>$this->{$row->setting_name}));
+		if($this->isWP){
+			$this->create_wp_settings();
+			$sql = "SELECT `setting_name`, `setting_format`, `setting_value` FROM `skype_settings`;";
+			$results = $wpdb->get_results($sql);
+			if($results){
+				foreach ($results as $row) {
+					$this->{$row->setting_name} = $this->parse_wp_settings($row);
+					$this->debug(array('raw'=>$row->setting_value, 'parsed'=>$this->{$row->setting_name}));
+				}
+				$sql = null;
+				$results = null;
+				return true;
 			}
 			$sql = null;
 			$results = null;
-			return true;
 		}
-		$sql = null;
-		$results = null;
 		return false;
 	}
 
-	private function create_wp_settings(){
+	private function parse_wp_settings($row = null){
+		if($this->isWP && !is_null($row)){
+			switch ($row->setting_format) {
+				case 'json':
+					return json_decode($row->setting_value);
+					break;
+				case 'int':
+					return (int)$row->setting_value;
+				case 'string':
+				case 'float':
+				case 'decimal':
+				default:
+					return $row->setting_value;
+					break;
+			}
+		}
+		return false;
+	}
+
+	public function set_wp_settings($opts = null){
 		global $wpdb;
-		include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'conf.php'));
-		$sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `skype_settings` ("
-			." `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,"
-			." `setting_name` VARCHAR(10) NOT NULL,"
-			." `setting_format` VARCHAR(10) NOT NULL DEFAULT 'json',"
-			." `setting_value` TEXT NOT NULL,"
-			." PRIMARY KEY (`id`),"
-			." UNIQUE INDEX `name` (`setting_name`)"
-			." ) ENGINE=InnoDB;");
-		$result = $wpdb->query($sql);
-		$value = json_encode($_defaults);
-		$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_attr', 'json', '".$value."');";
-		$result = $wpdb->query($sql);
-		$value = json_encode($_rules);
-		$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_rules', 'json', '".$value."');";
-		$result = $wpdb->query($sql);
-		$value = json_encode($_prio);
-		$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_prio', 'json', '".$value."');";
-		$result = $wpdb->query($sql);
-		$value = null;
-		$sql = null;
-		$result = null;
+		if($this->isWP && is_array($opts)){
+			$this->create_wp_settings();
+			$sql = "SELECT * FROM `skype_settings`;";
+			$results = $wpdb->get_results($sql);
+			if($results){
+				$res = array();
+				foreach ($results as $row) {
+					if(in_array($row->setting_name, array_keys($opts))){
+						array_push($res, $wpdb->update("skype_settings", array("setting_value"=>json_encode($opts[$row->setting_name])), array("setting_name"=>$row->setting_name)));
+					}
+				}
+				return $res;
+			}
+		}
+		return false;
 	}
 
 	// filter out non-standard arguments and use default values where necessary

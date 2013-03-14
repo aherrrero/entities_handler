@@ -12,7 +12,7 @@ $_defaults = array(
 	'name'=>'Echo',
 	'type'=>'call',
 	'size'=>'16',
-	'backups'=>false
+	'backups'=>'false'
 );
 
 

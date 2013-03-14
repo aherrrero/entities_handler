@@ -69,7 +69,7 @@ function skype_attr_page(){
 						<label for='name'><strong>Display Name</strong></label>
 					</th>
 					<td>
-						<input type='text' class='regular-text ltr' name='name' id='name' value='<?php echo $_attr->username; ?>' />
+						<input type='text' class='regular-text ltr' name='name' id='name' value='<?php echo $_attr->name; ?>' />
 						<p class='description'>The name as displayed in the link text (e.g. Sales, Support, Dave)</p>
 					</td>
 				</tr>
@@ -106,7 +106,7 @@ function skype_attr_page(){
 						<label for='backups'><strong>Backup Accounts</strong></label>
 					</th>
 					<td>
-						<input type='text' class='regular-text ltr' name='backups' id='backups' value='<?php echo $_attr->backups; ?>' />
+						<input type='text' class='regular-text ltr' name='backups' id='backups' value='<?php echo ($_attr->backups !== "false" ? $_attr->backups : ""); ?>' />
 						<p class='description'>A comma-separated list of accounts to try if the <code>username</code> account is not 'online'.</p>
 					</td>
 				</tr>
@@ -122,8 +122,8 @@ function skype_attr_page(){
 			</tbody>
 		</table>
 		<p class='submit settings'>
-			<input type='submit' name='settings_save _attr' id='settings_save _attr' class='button-primary' value='Save Changes' />
-			<input type='button' name='cancel_save' id='cancel_save' class='button cancel' value='Cancel' />
+			<input type='submit' name='skype_save' id='skype_save' class='button-primary _attr' value='Save Changes' />
+			<input type='button' name='skype_cancel' id='skype_cancel' class='button cancel _attr' value='Cancel' />
 		</p>
 	</form>
 	<?php
@@ -149,8 +149,8 @@ function skype_rules_page(){
 			</tbody>
 		</table>
 		<p class='submit settings'>
-			<input type='submit' name='settings_save _rules' id='settings_save _rules' class='button-primary' value='Save Changes' />
-			<input type='button' name='cancel_save' id='cancel_save' class='button cancel' value='Cancel' />
+			<input type='submit' name='skype_save' id='skype_save' class='button-primary _rules' value='Save Changes' />
+			<input type='button' name='skype_cancel' id='skype_cancel' class='button cancel _rules' value='Cancel' />
 		</p>
 	</form>
 	<?php
@@ -176,8 +176,8 @@ function skype_prio_page(){
 			</tbody>
 		</table>
 		<p class='submit settings'>
-			<input type='submit' name='settings_save _prio' id='settings_save _prio' class='button-primary' value='Save Changes' />
-			<input type='button' name='cancel_save' id='cancel_save' class='button cancel' value='Cancel' />
+			<input type='submit' name='skype_save' id='skype_save' class='button-primary _prio' value='Save Changes' />
+			<input type='button' name='skype_cancel' id='skype_cancel' class='button cancel _prio' value='Cancel' />
 		</p>
 	</form>
 	<?php
