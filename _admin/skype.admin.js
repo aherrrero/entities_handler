@@ -4,7 +4,16 @@ jQuery(document).ready(function(){
 		e.preventDefault();
 		var set_name = e.target.className.split(" ")[1];
 		var _data = {};
-		_data[set_name] = {};
+		switch(set_name){
+			case '_attr':
+				_data[set_name] = {};
+				break;
+			case '_rules':
+			case '_prio':
+			default:
+				_data[set_name] = [];
+				break;
+		}
 		var form = jQuery("form#skype_settings table tbody");
 		jQuery.each(jQuery(form)[0].children, function(a, b){
 			var value = false, name = false;
@@ -18,11 +27,21 @@ jQuery(document).ready(function(){
 			if(field.tagName.toLowerCase() === 'select'){
 				value = field.options[field.selectedIndex].value;
 			}
-			name = (name) ? name : field.name;
+			switch(set_name){
+				case '_attr':
+					name = (name) ? name : field.name;
+					break;
+				case '_rules':
+				case '_prio':
+				default:
+					name = a;
+					break;
+			}
 			value = (value) ? value : field.value;
 			_data[set_name][name] = value;
 			name = value = null;
 		});
+		// console.log(_data);
 		do_ajax(_data);
 	});
 });

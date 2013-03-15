@@ -133,17 +133,227 @@ function skype_rules_page(){
 	global $_settings;
 	$_rules = $_settings['rules'];
 	?>
-	<p>Use this page to change the default </p>
+	<p>Use this page to change the default status display rules.</p>
+	<p>
+		There are 8 (eight) possible statuses according to the Skype API, as outlined below in order. The values of the 'Rule Name' column<br />
+		should be used when naming image files to represent each status.
+	</p>
+	<table width='600'>
+		<thead>
+			<tr>
+				<th style='text-align: left;'>Return Code</th>
+				<th style='text-align: left;'>Status</th>
+				<th style='text-align: left;'>Rule Name</th>
+				<th style='text-align: left;'>Default Rule</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>0</td>
+				<td>Unknown</td>
+				<td>unknown</td>
+				<td>offline</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>Offline</td>
+				<td>offline</td>
+				<td>offline</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>Online</td>
+				<td>online</td>
+				<td>online</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>Away</td>
+				<td>away</td>
+				<td>away</td>
+			</tr>
+			<tr>
+				<td>4</td>
+				<td>Not Available</td>
+				<td>na</td>
+				<td>offline</td>
+			</tr>
+			<tr>
+				<td>5</td>
+				<td>Do Not Disturb</td>
+				<td>dnd</td>
+				<td>dnd</td>
+			</tr>
+			<tr>
+				<td>6</td>
+				<td>Invisible</td>
+				<td>invisible</td>
+				<td>offline</td>
+			</tr>
+			<tr>
+				<td>7</td>
+				<td>Skype Me</td>
+				<td>skypeme</td>
+				<td>online</td>
+			</tr>
+		</tbody>
+	</table>
+	<br /><br />
+	<p>Define below how to represent each status:</p>
 	<form name='skype_settings' id='skype_settings' action='' method='POST'>
 		<table class='form-table'>
 			<tbody>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='unknown'><strong>0: Unknown</strong></label>
+					</th>
+					<td>
+						<select name='unknown' id='unknown'>
+							<option value='unknown'<?php echo ($_rules[0] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[0] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[0] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[0] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[0] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[0] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[0] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[0] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='offline'><strong>1: Offline</strong></label>
+					</th>
+					<td>
+						<select name='offline' id='offline'>
+							<option value='unknown'<?php echo ($_rules[1] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[1] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[1] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[1] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[1] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[1] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[1] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[1] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='online'><strong>2: Online</strong></label>
+					</th>
+					<td>
+						<select name='online' id='online'>
+							<option value='unknown'<?php echo ($_rules[2] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[2] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[2] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[2] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[2] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[2] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[2] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[2] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='away'><strong>3: Away</strong></label>
+					</th>
+					<td>
+						<select name='away' id='away'>
+							<option value='unknown'<?php echo ($_rules[3] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[3] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[3] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[3] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[3] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[3] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[3] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[3] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='na'><strong>4: Not Available</strong></label>
+					</th>
+					<td>
+						<select name='na' id='na'>
+							<option value='unknown'<?php echo ($_rules[4] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[4] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[4] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[4] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[4] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[4] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[4] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[4] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='dnd'><strong>5: Do Not Disturb</strong></label>
+					</th>
+					<td>
+						<select name='dnd' id='dnd'>
+							<option value='unknown'<?php echo ($_rules[5] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[5] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[5] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[5] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[5] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[5] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[5] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[5] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='invisible'><strong>6: Invisible</strong></label>
+					</th>
+					<td>
+						<select name='invisible' id='invisible'>
+							<option value='unknown'<?php echo ($_rules[6] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[6] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[6] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[6] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[6] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[6] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[6] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[6] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign='top'>
+					<th scope='row'>
+						<label for='skypeme'><strong>7: Skype Me</strong></label>
+					</th>
+					<td>
+						<select name='dnd' id='dnd'>
+							<option value='unknown'<?php echo ($_rules[7] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[7] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[7] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[7] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[7] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[7] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[7] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[7] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
+					</td>
+				</tr>
 				<!-- <tr valign='top'>
 					<th scope='row'>
 						<label for=''></label>
 					</th>
 					<td>
-						<input type='text' class='regular-text ltr' name='' id='' value='<?php  ?>' />
-						<p class='description'></p>
+						<select name='' id=''>
+							<option value='unknown'<?php echo ($_rules[0] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
+							<option value='offline'<?php echo ($_rules[0] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
+							<option value='online'<?php echo ($_rules[0] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
+							<option value='away'<?php echo ($_rules[0] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
+							<option value='na'<?php echo ($_rules[0] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
+							<option value='dnd'<?php echo ($_rules[0] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
+							<option value='invisible'<?php echo ($_rules[0] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
+							<option value='skypeme'<?php echo ($_rules[0] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
+						</select>
 					</td>
 				</tr> -->
 			</tbody>
