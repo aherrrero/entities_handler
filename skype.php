@@ -287,7 +287,9 @@ class WPSkypeStatus{
 	private function sort_priority($a, $b) {
 		return strcmp($a[2], $b[2]);
 	}
-	
+
+	// only replace the first occurrence of $search rather than all of them
+	// taken from here: http://stackoverflow.com/a/2606638/1734964
 	private function str_replace_first($search, $replace, $subject) {
 		$pos = strpos($subject, $search);
 		if ($pos !== false) {

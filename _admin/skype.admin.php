@@ -59,8 +59,8 @@ function skype_attr_page(){
 					<td>
 						<input type='text' class='regular-text ltr' name='username' id='username' value='<?php echo $_attr->username; ?>' />
 						<p class='description'>
-							The Skype account to link to by default.<br />
-							May or may not support a list of usernames for a group chat/call.
+							The Skype account to link to by default. Separate usernames for a group cal/chat with semicolons - no spaces!.<br />
+							Status check is not performed if the link is a group call/chat, and any accounts given as backups will be ignored.
 						</p>
 					</td>
 				</tr>
@@ -344,16 +344,7 @@ function skype_rules_page(){
 						<label for=''></label>
 					</th>
 					<td>
-						<select name='' id=''>
-							<option value='unknown'<?php echo ($_rules[0] === 'unknown' ? ' selected="selected"' : ''); ?>>Unknown</option>
-							<option value='offline'<?php echo ($_rules[0] === 'offline' ? ' selected="selected"' : ''); ?>>Offline</option>
-							<option value='online'<?php echo ($_rules[0] === 'online' ? ' selected="selected"' : ''); ?>>Online</option>
-							<option value='away'<?php echo ($_rules[0] === 'away' ? ' selected="selected"' : ''); ?>>Away</option>
-							<option value='na'<?php echo ($_rules[0] === 'na' ? ' selected="selected"' : ''); ?>>Not Available</option>
-							<option value='dnd'<?php echo ($_rules[0] === 'dnd' ? ' selected="selected"' : ''); ?>>Do Not Disturb</option>
-							<option value='invisible'<?php echo ($_rules[0] === 'invisible' ? ' selected="selected"' : ''); ?>>Invisible</option>
-							<option value='skypeme'<?php echo ($_rules[0] === 'skypeme' ? ' selected="selected"' : ''); ?>>Skype Me</option>
-						</select>
+						
 					</td>
 				</tr> -->
 			</tbody>
@@ -369,22 +360,33 @@ function skype_rules_page(){
 function skype_prio_page(){
 	global $_settings;
 	$_prio = $_settings['weighting'];
+	$_labels = array(
+		'skypeme' => 'Skype Me',
+		'online' => 'Online',
+		'away' => 'Away',
+		'dnd' => 'Do Not Disturb',
+		'na' => 'Not Available',
+		'invisible' => 'Invisible',
+		'offline' => 'Offline',
+		'unknown' => 'Unknown'
+	);
 	?>
-	<p>Use this page to change the default </p>
+	<p>
+		Use this page to change the default weighting of the possible Skype statuses. The nearer the top of the list a status is<br />
+		the more preferred it will be. This weighting is used when parsing backup accounts in order to provide your users with a<br />
+		as close to 'online' - and thus more available to talk - as possible.
+	</p>
 	<form name='skype_settings' id='skype_settings' action='' method='POST'>
-		<table class='form-table'>
-			<tbody>
-				<!-- <tr valign='top'>
-					<th scope='row'>
-						<label for=''></label>
-					</th>
-					<td>
-						<input type='text' class='regular-text ltr' name='' id='' value='<?php  ?>' />
-						<p class='description'></p>
-					</td>
-				</tr> -->
-			</tbody>
-		</table>
+		<ul id='sortable'>
+			<?php
+			foreach ($_prio as $status) {
+				echo "<li class='ui-state-default'>";
+				echo "<span class='label'>".$_labels[$status]."</span>";
+				echo "<span class='input' style='display: none;'><input type='hidden' value='$status' name='$status' id='$status' /></span>";
+				echo "</li>";
+			}
+			?>
+		</ul>
 		<p class='submit settings'>
 			<input type='submit' name='skype_save' id='skype_save' class='button-primary _prio' value='Save Changes' />
 			<input type='button' name='skype_cancel' id='skype_cancel' class='button cancel _prio' value='Cancel' />

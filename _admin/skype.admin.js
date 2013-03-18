@@ -1,20 +1,27 @@
 var timers = {};
 jQuery(document).ready(function(){
+	jQuery( "#sortable" ).sortable({
+		placeholder: "ui-state-highlight"
+	});
+	jQuery( "#sortable" ).disableSelection();
+
 	jQuery("#skype_settings #skype_save").click(function(e){
 		e.preventDefault();
+		var find = "table tbody";
 		var set_name = e.target.className.split(" ")[1];
 		var _data = {};
 		switch(set_name){
 			case '_attr':
 				_data[set_name] = {};
 				break;
-			case '_rules':
 			case '_prio':
+				find = "#sortable";
+			case '_rules':
 			default:
 				_data[set_name] = [];
 				break;
 		}
-		var form = jQuery("form#skype_settings table tbody");
+		var form = jQuery("form#skype_settings "+find);
 		jQuery.each(jQuery(form)[0].children, function(a, b){
 			var value = false, name = false;
 			field = b.children[1].children[0];
@@ -41,7 +48,7 @@ jQuery(document).ready(function(){
 			_data[set_name][name] = value;
 			name = value = null;
 		});
-		// console.log(_data);
+		console.log(_data);
 		do_ajax(_data);
 	});
 });

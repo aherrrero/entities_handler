@@ -15,10 +15,17 @@ function skype_admin_menu(){
 	add_management_page( 'Skype Options', 'Skype Options', 'manage_options', 'skype-options', 'skype_admin_setup' );
 }
 function admin_js(){
-	wp_enqueue_script( 'skype.admin', WP_PLUGIN_URL . '/WPSkypeStatus/_admin/skype.admin.js', array( 'jquery' ) );
+	global $_settings;
+	wp_enqueue_script( 'jquery.ui.skype', $_settings['url'] . 'jquery/js/jquery-ui-1.10.2.custom.min.js', array( 'jquery' ) );
+	wp_enqueue_script( 'skype.admin', $_settings['url'] . '_admin/skype.admin.js', array( 'jquery', 'jquery.ui.skype' ) );
+}
+function admin_css(){
+	global $_settings;
+	wp_enqueue_style( 'jquery.ui.skype', $_settings['url'] . 'jquery/css/no-theme/jquery-ui-1.10.2.custom.css', false );
 }
 if($_settings['isWP']){
 	require_once $_settings['path'] . implode(DIRECTORY_SEPARATOR, array('', '_admin', 'skype.admin.php'));
+	add_action('admin_head', 'admin_css');
 	add_action('admin_menu', 'skype_admin_menu');
 	add_action( 'in_admin_footer', 'admin_js', 11 );
 }
