@@ -3,14 +3,35 @@
  * Plugin Name: WPSkypeStatus
  * Description: A simple way to add status-aware Skype links to your site.
  * Author: Dan Bennett
- * Version: 0.1.0
+ * Version: 0.9.2
  */
 
 include 'skype.php';
 $WPSS = new WPSkypeStatus();
+$_settings = $WPSS->set_debug(true, true, false);
+$WPSS->set_debug(false);
+
+function skype_admin_menu(){
+	add_management_page( 'Skype Options', 'Skype Options', 'manage_options', 'skype-options', 'skype_admin_setup' );
+}
+function admin_js(){
+	global $_settings;
+	wp_enqueue_script( 'jquery.ui.skype', $_settings['url'] . 'jquery/js/jquery-ui-1.10.2.custom.min.js', array( 'jquery' ) );
+	wp_enqueue_script( 'skype.admin', $_settings['url'] . '_admin/skype.admin.min.js', array( 'jquery', 'jquery.ui.skype' ) );
+}
+function admin_css(){
+	global $_settings;
+	wp_enqueue_style( 'jquery.ui.skype', $_settings['url'] . 'jquery/css/no-theme/jquery-ui-1.10.2.custom.min.css', false );
+}
+if($_settings['isWP']){
+	require_once $_settings['path'] . implode(DIRECTORY_SEPARATOR, array('', '_admin', 'skype.admin.php'));
+	add_action('admin_head', 'admin_css');
+	add_action('admin_menu', 'skype_admin_menu');
+	add_action( 'in_admin_footer', 'admin_js', 11 );
+}
 
 // example
-if(!defined("WP_PLUGIN_URL")){
+if(!$_settings['isWP']){
 	if(!isset($_GET['json'])){
 		// setup args from querystring
 		$args = array();
@@ -104,8 +125,8 @@ if(!defined("WP_PLUGIN_URL")){
 		</html>
 		<?php
 	} else {
-		echo "<pre>" . print_r($WPSS->debug(true, true), true) . "</pre>";
-		$WPSS->debug(false);
+		echo "<pre>" . print_r($WPSS->set_debug(true, true), true) . "</pre>";
+		$WPSS->set_debug(false);
 	}
 }
 ?>

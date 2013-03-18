@@ -6,24 +6,15 @@ $_path = explode('/', $_path);
 array_pop($_path);
 $_dirURL = '/'.implode('/', $_path).'/';
 
-/*
-DEFAULT PARAMETERS
-
-$defaults = array(
-	'name'=>'Echo',
-	'username'=>'echo123',
-	'size'=>'16',
-	'backups'=>false
-);
-*/
-
+//DEFAULT PARAMETERS
 $_defaults = array(
 	'username'=>'echo123',
 	'name'=>'Echo',
 	'type'=>'call',
 	'size'=>'16',
-	'backups'=>false
+	'backups'=>'false'
 );
+
 
 /*
 SKYPE API RETURN CODES
@@ -38,22 +29,10 @@ code	meaning				rule name
 5		do not disturb		dnd
 6		invisible			invisible
 7		skype me			skypeme
-
-STATUS RULES
-array matching rule names to API return codes
-
-$_rules = array(
-	'offline',
-	'offline',
-	'online',
-	'away',
-	'offline',
-	'dnd',
-	'offline',
-	'online'
-);
 */
 
+// STATUS RULES
+// array matching rule names to API return codes
 $_rules = array(
 	'offline',
 	'offline',
@@ -65,22 +44,9 @@ $_rules = array(
 	'online'
 );
 
-/*
-STATUS WEIGHTING
-the order statuses should be prioritised when checking backup accounts
 
-$_prio = array(
-	'skypeme',
-	'online',
-	'away',
-	'dnd',
-	'na',
-	'invisible',
-	'offline',
-	'unknown'
-);
-*/
-
+// STATUS WEIGHTING
+// the order statuses should be prioritised when checking backup accounts
 $_prio = array(
 	'skypeme',
 	'online',
