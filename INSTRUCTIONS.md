@@ -19,7 +19,7 @@ In order to use WPSkypeStatus as a normal PHP class you don't have to change any
 ### Installation ###
 
 1. [Download](https://github.com/Ultrabenosaurus/WPSkypeStatus/zipball/master) and extract the project
-2. Copy `skype.php` to where you keep external libraries
+2. Copy `skype.php`, `_admin/conf.php` and the `images/` folder to where you keep external libraries
 2. Include `skype.php` and instantiate a new `WPSkypeStatus` object
 
 **Example**
@@ -46,6 +46,18 @@ echo $WPSS->skype($_args);
 ```
 
 Any arguments you omit will take their values from the defaults in `conf.php`.
+
+### Changing Defaults ###
+
+1. Open `_admin/conf.php` in your favourite text editor
+2. Alter the values you want to change
+3. Save the file
+
+Next time you use WPSkypeStatus (probably when you refresh the page you're working on) anywhere that uses a default value from `conf.php` will use the new values you just set. Simple.
+
+If you want to change something that's not in `conf.php` - though I don't know why you would - you'll have to look inside `skype.php` and change it there. This is discouraged, however, as it complicates things if ever you try to upgrade WPSkypeStatus and means other people working on the project may not know where to go if they need to change it back.
+
+If there's something that currently can't be changed but you think would benefit from being in `conf.php` then [open an issue](https://github.com/Ultrabenosaurus/WPSkypeStatus/issues) - after checking it hasn't already been requested - and I'll have a think about it.
 
 ### Debugging ###
 

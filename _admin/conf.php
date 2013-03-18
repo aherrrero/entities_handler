@@ -47,6 +47,7 @@ $_rules = array(
 
 // STATUS WEIGHTING
 // the order statuses should be prioritised when checking backup accounts
+// the higher up the list the more preferred that status is
 $_prio = array(
 	'skypeme',
 	'online',
