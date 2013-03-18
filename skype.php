@@ -42,14 +42,14 @@ class WPSkypeStatus{
 
 	// build and return Skype Call link
 	public function skype($attributes = null){
-		$_alt = "This link will try to initiate a %d on Skype with %d, whose status is currently %d.";
+		$_alt = "This link will try to initiate a %s on Skype with %s, whose status is currently %s.";
 		// dump if debug is enabled
 		$this->debug(array('attributes'=>$attributes, 'filtered'=>$this->filter_atts($this->_attr, $attributes)));
 		// get parameters
 		extract($this->filter_atts($this->_attr, $attributes));
 		// check if a group of users
 		if(count(explode(';', $username)) > 1){
-			$_alt = "This link will try to initiate a group %d on Skype with %d. It is not guaranteed that any of the participants will be online.";
+			$_alt = "This link will try to initiate a group %s on Skype with %s. It is not guaranteed that any of the participants will be online.";
 			$_icon = 'group';
 		} else {
 			// get status of the initial username
@@ -84,10 +84,10 @@ class WPSkypeStatus{
 		// get type of link to build
 		$type = ((strtolower($type) === 'call' || strtolower($type) === 'chat') ? strtolower($type) : ((strtolower($type) === 'video') ? 'call&video=true' : 'call'));
 		// complete link alt text
-		$_alt = (($type === 'call&video=true') ? $this->str_replace_first('%d', 'video call', $_alt) : $this->str_replace_first('%d', $type, $_alt));
-		$_alt = ((count(explode(';', $username)) > 1) ? $this->str_replace_first('%d', implode(', ', explode(';', $username)), $_alt) : $this->str_replace_first('%d', $username, $_alt));
+		$_alt = (($type === 'call&video=true') ? $this->str_replace_first('%s', 'video call', $_alt) : $this->str_replace_first('%s', $type, $_alt));
+		$_alt = ((count(explode(';', $username)) > 1) ? $this->str_replace_first('%s', implode(', ', explode(';', $username)), $_alt) : $this->str_replace_first('%s', $username, $_alt));
 		if($_icon !== 'group'){
-			$_alt = $this->str_replace_first('%d', $_icon, $_alt);
+			$_alt = $this->str_replace_first('%s', $_icon, $_alt);
 		}
 		// build image URL
 		$_icon = $this->imgPath['uri'].$_icon.".".$size.".png";

@@ -88,9 +88,48 @@
 
 
 
-/* Additions
+/* WPSkypeStatus Additions
 ----------------------------------*/
-#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
-html>body #sortable li { height: 1.5em; line-height: 1.2em; }
-.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+#sortable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 60%;
+}
+#sortable li.ui-state-default {
+	border: 1px solid #DDD;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	text-decoration: none;
+	background-color: #F1F1F1;
+	background-image: -ms-linear-gradient(top,#F9F9F9,#ECECEC);
+	background-image: -moz-linear-gradient(top,#F9F9F9,#ECECEC);
+	background-image: -o-linear-gradient(top,#F9F9F9,#ECECEC);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#F9F9F9),to(#ECECEC));
+	background-image: -webkit-linear-gradient(top,#F9F9F9,#ECECEC);
+	background-image: linear-gradient(top,#F9F9F9,#ECECEC);
+	color: #444;
+	padding: 5px 5px 0 5px;
+	font-size: 1em;
+	height: 1.5em;
+}
+html>body #sortable li, .sortable-size li {
+	height: 1.5em;
+	line-height: 1.2em;
+}
+.sortable-size {
+	list-style-type: none;
+	margin: 0;
+}
+.sortable-size li {
+	text-align: right;
+	font-weight: bold;
+	padding: 6px 6px 1px 6px;
+	font-size: 1em;
+}
+.ui-state-highlight {
+	height: 1.5em;
+	line-height: 1.2em;
+	border: 1px solid #fcefa1;
+	background-color: #fbf9ee;
+}

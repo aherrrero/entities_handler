@@ -5,6 +5,11 @@ jQuery(document).ready(function(){
 	});
 	jQuery( "#sortable" ).disableSelection();
 
+	jQuery("#skype_cancel").click(function(e){
+		e.preventDefault();
+		window.location.reload();
+	});
+
 	jQuery("#skype_settings #skype_save").click(function(e){
 		e.preventDefault();
 		var find = "table tbody";
@@ -48,7 +53,7 @@ jQuery(document).ready(function(){
 			_data[set_name][name] = value;
 			name = value = null;
 		});
-		console.log(_data);
+		// console.log(_data);
 		do_ajax(_data);
 	});
 });

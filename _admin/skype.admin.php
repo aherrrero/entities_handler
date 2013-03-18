@@ -45,9 +45,6 @@ function skype_attr_page(){
 	<p>
 		The values provided here will be used whenever the shortcode is used and the respective field is omitted. This allows<br />
 		you to omit any or all shortcode parameters and still have a working link.
-	<p>
-		Group chat/call <span style='text-transform: italics;'>should</span> work but I haven't tested it, or provided a status-lookup workaround for it, so don't be surprised<br />
-		if it doesn't work exactly as expected when you provide multiple accounts in the <code>username</code> field.
 	</p>
 	<form name='skype_settings' id='skype_settings' action='' method='POST'>
 		<table class='form-table'>
@@ -59,8 +56,8 @@ function skype_attr_page(){
 					<td>
 						<input type='text' class='regular-text ltr' name='username' id='username' value='<?php echo $_attr->username; ?>' />
 						<p class='description'>
-							The Skype account to link to by default. Separate usernames for a group cal/chat with semicolons - no spaces!.<br />
-							Status check is not performed if the link is a group call/chat, and any accounts given as backups will be ignored.
+							The Skype account to link to by default. Separate usernames for a group cal/chat with semicolons - no spaces!<br />
+							Status check is not performed if the link is a group call/chat, and any accounts given as <code>backups</code> will be ignored.
 						</p>
 					</td>
 				</tr>
@@ -84,7 +81,7 @@ function skype_attr_page(){
 							<option value='video'<?php echo (strtolower($_attr->type) === 'video' ? ' selected="selected"' : ''); ?>>Video</option>
 						</select>
 						<p class='description'>
-							Whether to initiate a Chat or Call from the link<br />
+							Whether to initiate a Chat, Call or Video Call from the link<br />
 							Please see the caveats of attempting a <a href='https://dev.skype.com/skype-uri/reference#uriCallVideoExplicit'>group video call</a>.
 						</p>
 					</td>
@@ -107,18 +104,12 @@ function skype_attr_page(){
 					</th>
 					<td>
 						<input type='text' class='regular-text ltr' name='backups' id='backups' value='<?php echo ($_attr->backups !== "false" ? $_attr->backups : ""); ?>' />
-						<p class='description'>A comma-separated list of accounts to try if the <code>username</code> account is not 'online'.</p>
+						<p class='description'>
+							A comma-separated list of accounts to try if the <code>username</code> account is not 'online'.<br />
+							The values given here, or in the shortcode, will be ignored if the <code>username</code> is a semicolon-delimited list.
+						</p>
 					</td>
 				</tr>
-				<!-- <tr valign='top'>
-					<th scope='row'>
-						<label for=''></label>
-					</th>
-					<td>
-						<input type='text' class='regular-text ltr' name='' id='' value='<?php  ?>' />
-						<p class='description'></p>
-					</td>
-				</tr> -->
 			</tbody>
 		</table>
 		<p class='submit settings'>
@@ -127,6 +118,7 @@ function skype_attr_page(){
 		</p>
 	</form>
 	<?php
+	$_attr = null;
 }
 
 function skype_rules_page(){
@@ -135,7 +127,7 @@ function skype_rules_page(){
 	?>
 	<p>Use this page to change the default status display rules.</p>
 	<p>
-		There are 8 (eight) possible statuses according to the Skype API, as outlined below in order. The values of the 'Rule Name' column<br />
+		There are 8 (eight) possible statuses according to the Skype API, as outlined below in order. The values of the <code>Rule Name</code> column<br />
 		should be used when naming image files to represent each status.
 	</p>
 	<table width='600'>
@@ -339,14 +331,6 @@ function skype_rules_page(){
 						</select>
 					</td>
 				</tr>
-				<!-- <tr valign='top'>
-					<th scope='row'>
-						<label for=''></label>
-					</th>
-					<td>
-						
-					</td>
-				</tr> -->
 			</tbody>
 		</table>
 		<p class='submit settings'>
@@ -355,6 +339,7 @@ function skype_rules_page(){
 		</p>
 	</form>
 	<?php
+	$_rules = null;
 }
 
 function skype_prio_page(){
@@ -373,26 +358,47 @@ function skype_prio_page(){
 	?>
 	<p>
 		Use this page to change the default weighting of the possible Skype statuses. The nearer the top of the list a status is<br />
-		the more preferred it will be. This weighting is used when parsing backup accounts in order to provide your users with a<br />
-		as close to 'online' - and thus more available to talk - as possible.
+		the more preferred it will be. This weighting is used when parsing backup accounts in order to provide your users with<br />
+		someone who is as close to 'online' - and thus as available to talk - as possible.
 	</p>
 	<form name='skype_settings' id='skype_settings' action='' method='POST'>
-		<ul id='sortable'>
-			<?php
-			foreach ($_prio as $status) {
-				echo "<li class='ui-state-default'>";
-				echo "<span class='label'>".$_labels[$status]."</span>";
-				echo "<span class='input' style='display: none;'><input type='hidden' value='$status' name='$status' id='$status' /></span>";
-				echo "</li>";
-			}
-			?>
-		</ul>
+		<table>
+			<tbody class='form-table'>
+				<tr valign='top'>
+					<th scope='row'>
+						<ul class='sortable-size'>
+							<li>Most Preferred: 0</li>
+							<li>1</li>
+							<li>2</li>
+							<li>3</li>
+							<li>4</li>
+							<li>5</li>
+							<li>6</li>
+							<li>Least Preferred: 7</li>
+						</ul>
+					</th>
+					<td style='min-width: 200px;'>
+						<ul id='sortable'>
+							<?php
+							foreach ($_prio as $status) {
+								echo "<li class='ui-state-default'>";
+								echo "<span class='label'>".$_labels[$status]."</span>";
+								echo "<span class='input' style='display: none;'><input type='hidden' value='$status' name='$status' id='$status' /></span>";
+								echo "</li>";
+							}
+							?>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 		<p class='submit settings'>
 			<input type='submit' name='skype_save' id='skype_save' class='button-primary _prio' value='Save Changes' />
 			<input type='button' name='skype_cancel' id='skype_cancel' class='button cancel _prio' value='Cancel' />
 		</p>
 	</form>
 	<?php
+	$_prio = $_labels = null;
 }
 
 ?>
