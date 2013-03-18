@@ -17,11 +17,11 @@ function skype_admin_menu(){
 function admin_js(){
 	global $_settings;
 	wp_enqueue_script( 'jquery.ui.skype', $_settings['url'] . 'jquery/js/jquery-ui-1.10.2.custom.min.js', array( 'jquery' ) );
-	wp_enqueue_script( 'skype.admin', $_settings['url'] . '_admin/skype.admin.js', array( 'jquery', 'jquery.ui.skype' ) );
+	wp_enqueue_script( 'skype.admin', $_settings['url'] . '_admin/skype.admin.min.js', array( 'jquery', 'jquery.ui.skype' ) );
 }
 function admin_css(){
 	global $_settings;
-	wp_enqueue_style( 'jquery.ui.skype', $_settings['url'] . 'jquery/css/no-theme/jquery-ui-1.10.2.custom.css', false );
+	wp_enqueue_style( 'jquery.ui.skype', $_settings['url'] . 'jquery/css/no-theme/jquery-ui-1.10.2.custom.min.css', false );
 }
 if($_settings['isWP']){
 	require_once $_settings['path'] . implode(DIRECTORY_SEPARATOR, array('', '_admin', 'skype.admin.php'));
