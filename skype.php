@@ -17,7 +17,7 @@ class WPSkypeStatus{
 		// check if being used as a WordPress plugin
 		$this->isWP = defined("WPLANG");
 		// find absolute path to this file
-		$this->dirPath = dirname(__FILE__);
+		$this->dirPath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 		if($this->isWP){
 			// use the WP_PLUGIN_URL constant for accuracy
 			$this->dirURL = WP_PLUGIN_URL . '/WPSkypeStatus/';
@@ -27,7 +27,7 @@ class WPSkypeStatus{
 			add_shortcode('skype', array($this, 'skype'));
 		} else {
 			// include conf file for default settings
-			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', '_admin', 'conf.php'));
+			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('_admin', 'conf.php'));
 			$this->dirURL = $_dirURL;
 			$this->_attr = $_defaults;
 			$this->_rules = $_rules;
@@ -35,7 +35,7 @@ class WPSkypeStatus{
 		}
 		// use $dirPath and $dirURL to get the paths for the images folder
 		$this->imgPath = array(
-			'abs'=>$this->dirPath.implode(DIRECTORY_SEPARATOR, array('', 'images', '')),
+			'abs'=>$this->dirPath.implode(DIRECTORY_SEPARATOR, array('images', '')),
 			'uri'=>$this->dirURL."images/"
 		);
 	}
@@ -164,7 +164,7 @@ class WPSkypeStatus{
 		$wpdb->query($sql);
 		if($wpdb->num_rows > 0){
 			// include conf.php to get defaults
-			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', '_admin', 'conf.php'));
+			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('_admin', 'conf.php'));
 			// make the table
 			$sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `skype_settings` ("
 				." `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,"
