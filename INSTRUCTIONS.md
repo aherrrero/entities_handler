@@ -2,19 +2,30 @@
 
 This file aims to give you instructions on how to install and use the WPSkypeStatus project - either as a normal PHP class or as WordPress plugin.
 
+## Contents ##
+
+* [Standard PHP](#standard-php)
+    * [Installation](#installaion)
+    * [Usage](#usage)
+    * [Debugging](#debugging)
+* [WordPress Plugin](#wordpress-plugin)
+    * [Installaion](#installation-1)
+    * [Usage](#usage-1)
+
 ## Standard PHP ##
 
-In order to use WPSkypeStatus as a normal PHP class you don't have to change anything - it'll work straight out of the box. If you want, you can change the values in `conf.php` to make adding Skype links even easier, but that isn't necessary at all.
+In order to use WPSkypeStatus as a normal PHP class you don't have to change anything - it'll work straight out of the box. If you want, you can change the values in `conf.php` to make adding Skype links even easier by not having to use the array of parameters each time.
 
 ### Installation ###
 
-1. [Download the project](https://github.com/Ultrabenosaurus/WPSkypeStatus/zipball/master)
+1. [Download](https://github.com/Ultrabenosaurus/WPSkypeStatus/zipball/master) and extract the project
+2. Copy `skype.php` to where you keep external libraries
 2. Include `skype.php` and instantiate a new `WPSkypeStatus` object
 
 **Example**
 
 ```php
-include 'skype.php';
+include 'lib/skype.php';
 $WPSS = new WPSkypeStatus();
 ```
 
