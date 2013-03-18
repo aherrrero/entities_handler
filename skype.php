@@ -156,12 +156,16 @@ class WPSkypeStatus{
 		return array($users[0][0], $users[0][1]);
 	}
 
+	// make settings table and insert defaults if it doesn't exist
 	private function create_wp_settings(){
 		global $wpdb;
+		// check for table
 		$sql = "SHOW TABLES LIKE 'skype_settings';";
 		$wpdb->query($sql);
-		if($this->isWP && $wpdb->num_rows > 0){
+		if($wpdb->num_rows > 0){
+			// include conf.php to get defaults
 			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('', '_admin', 'conf.php'));
+			// make the table
 			$sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `skype_settings` ("
 				." `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,"
 				." `setting_name` VARCHAR(10) NOT NULL,"
@@ -171,6 +175,7 @@ class WPSkypeStatus{
 				." UNIQUE INDEX `name` (`setting_name`)"
 				." ) ENGINE=InnoDB;");
 			$result = $wpdb->query($sql);
+			// insert the settings
 			$value = json_encode($_defaults);
 			$sql = "INSERT IGNORE INTO `skype_settings` (`setting_name`, `setting_format`, `setting_value`) VALUES ('_attr', 'json', '".$value."');";
 			$result = $wpdb->query($sql);
@@ -186,62 +191,81 @@ class WPSkypeStatus{
 		}
 	}
 
+	// get the settings from the database
 	private function get_wp_settings(){
 		global $wpdb;
-		if($this->isWP){
-			$this->create_wp_settings();
-			$sql = "SELECT `setting_name`, `setting_format`, `setting_value` FROM `skype_settings`;";
-			$results = $wpdb->get_results($sql);
-			if($results){
-				foreach ($results as $row) {
-					$this->{$row->setting_name} = $this->parse_wp_settings($row);
-					$this->debug(array('raw'=>$row->setting_value, 'parsed'=>$this->{$row->setting_name}));
-				}
-				$sql = null;
-				$results = null;
-				return true;
+		// make sure the settings table exists
+		$this->create_wp_settings();
+		// pull all settings
+		$sql = "SELECT `setting_name`, `setting_format`, `setting_value` FROM `skype_settings`;";
+		$results = $wpdb->get_results($sql);
+		if($results){
+			// parse results adding to Class object
+			foreach ($results as $row) {
+				$this->{$row->setting_name} = $this->parse_wp_settings($row);
+				$this->debug(array('raw'=>$row->setting_value, 'parsed'=>$this->{$row->setting_name}));
 			}
+			// return true, because settings were found
 			$sql = null;
 			$results = null;
+			return true;
 		}
+		// return false because for some reason the settings were empty
+		$sql = null;
+		$results = null;
 		return false;
 	}
 
+	// parse the settings depending on their type
 	private function parse_wp_settings($row = null){
-		if($this->isWP && !is_null($row)){
+		if(!is_null($row)){
+			// switch on the row format
 			switch ($row->setting_format) {
 				case 'json':
+					// return an object if the setting is JSON
 					return json_decode($row->setting_value);
 					break;
 				case 'int':
+					// cast to integer
 					return (int)$row->setting_value;
 				case 'string':
 				case 'float':
 				case 'decimal':
 				default:
+					// return as extracted
 					return $row->setting_value;
 					break;
 			}
 		}
+		// return false if no row given
 		return false;
 	}
 
+	// update settings - currently doesn't allow adding new settings
 	public function set_wp_settings($opts = null){
 		global $wpdb;
-		if($this->isWP && is_array($opts)){
+		// check an array was passed
+		if(is_array($opts)){
+			// make sure the table exists with data
 			$this->create_wp_settings();
-			$sql = "SELECT * FROM `skype_settings`;";
+			// get names of all current settings
+			$sql = "SELECT `setting_name` FROM `skype_settings`;";
 			$results = $wpdb->get_results($sql);
 			if($results){
+				// new array for return values
 				$res = array();
 				foreach ($results as $row) {
+					// loop setting names, check if exists in keys of given array
 					if(in_array($row->setting_name, array_keys($opts))){
+						// add result of the update query to the return array
 						array_push($res, $wpdb->update("skype_settings", array("setting_value"=>json_encode($opts[$row->setting_name])), array("setting_name"=>$row->setting_name)));
 					}
 				}
+				// return the array of results
 				return $res;
 			}
 		}
+		// return false if parameter wasn't an array or no settings found
 		return false;
 	}
 
