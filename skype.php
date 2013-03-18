@@ -323,7 +323,7 @@ class WPSkypeStatus{
 	}
 
 	// enable debugging
-	public function set_debug($state = false, $return = false, $json = true){
+	public function set_debug($state = false, $return = false, $json = false){
 		// ensure params are only either true or false
 		$state = ($state === false ? false : true);
 		$return = ($return === false ? false : true);
@@ -350,7 +350,14 @@ class WPSkypeStatus{
 			}
 		}
 	}
-	
+
+	// return current settings, immediately turning debugging off again
+	public function get_current_settings(){
+		$_set = $this->set_debug(true, true);
+		$this->set_debug(false);
+		return $_set;
+	}
+
 	// output debug data from class functions
 	private function debug($data){
 		if($this->_debug[0]){
