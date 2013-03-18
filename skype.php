@@ -42,43 +42,57 @@ class WPSkypeStatus{
 
 	// build and return Skype Call link
 	public function skype($attributes = null){
+		$_alt = "This link will try to initiate a %d on Skype with %d, whose status is currently %d.";
 		// dump if debug is enabled
 		$this->debug(array('attributes'=>$attributes, 'filtered'=>$this->filter_atts($this->_attr, $attributes)));
 		// get parameters
 		extract($this->filter_atts($this->_attr, $attributes));
-		// get status of the initial username
-		$_icon = $this->_rules[$this->get_skype_status($username)];
-		// if initial user isn't 'online' and backups are provided, check them
-		// defaults to user with lowest weighted status (see $_prio in conf.php)
-		if($backups !== "false" && $_icon !== 'online'){
-			// dump if debug is enabled
-			$this->debug($backups);
-			$backups = $this->array_trim(explode(',', $backups));
-			$_back = array();
-			// loop through all backup accounts getting their status
-			foreach ($backups as $key => $value) {
-				$icon = $this->_rules[$this->get_skype_status($value)];
-				$_back[] = array($value, $icon);
-			}
-			// get backup account with lowest weighted status
-			$_back = $this->check_status_priority($_back);
-			if($_back){
-				$username = $_back[0];
-				$_icon = $_back[1];
+		// check if a group of users
+		if(count(explode(';', $username)) > 1){
+			$_alt = "This link will try to initiate a group %d on Skype with %d. It is not guaranteed that any of the participants will be online.";
+			$_icon = 'group';
+		} else {
+			// get status of the initial username
+			$_icon = $this->_rules[$this->get_skype_status($username)];
+			// if initial user isn't 'online' and backups are provided, check them
+			// defaults to user with lowest weighted status (see $_prio in conf.php)
+			if($backups !== "false" && $_icon !== 'online'){
+				// dump if debug is enabled
+				$this->debug($backups);
+				$backups = $this->array_trim(explode(',', $backups));
+				$_back = array();
+				// loop through all backup accounts getting their status
+				foreach ($backups as $key => $value) {
+					$icon = $this->_rules[$this->get_skype_status($value)];
+					$_back[] = array($value, $icon);
+				}
+				// get backup account with lowest weighted status
+				$_back = $this->check_status_priority($_back);
+				if($_back){
+					$username = $_back[0];
+					$_icon = $_back[1];
+				}
 			}
 		}
 		// dump if debug is enabled
 		$this->debug(array('username'=>$username, 'status'=>$_icon));
 		// check size of icon
 		$size = ((!file_exists($this->imgPath['abs'].$_icon.".".$size.'.png')) ? $this->_attr['size'] : $size);
-		// build image URL
-		$_icon = $this->imgPath['uri'].$_icon.".".$size.".png";
 		// get variable classes for elements
 		$_class_user = str_replace('.', '', strip_tags(trim($username)));
 		$_class_size = "size_".$size;
+		// get type of link to build
 		$type = ((strtolower($type) === 'call' || strtolower($type) === 'chat') ? strtolower($type) : ((strtolower($type) === 'video') ? 'call&video=true' : 'call'));
+		// complete link alt text
+		$_alt = (($type === 'call&video=true') ? $this->str_replace_first('%d', 'video call', $_alt) : $this->str_replace_first('%d', $type, $_alt));
+		$_alt = ((count(explode(';', $username)) > 1) ? $this->str_replace_first('%d', implode(', ', explode(';', $username)), $_alt) : $this->str_replace_first('%d', $username, $_alt));
+		if($_icon !== 'group'){
+			$_alt = $this->str_replace_first('%d', $_icon, $_alt);
+		}
+		// build image URL
+		$_icon = $this->imgPath['uri'].$_icon.".".$size.".png";
 		// return the HTML of the link
-		return "<div class='skype $type $_class_user $_class_size'><a class='skype_link $_class_user $_class_size' href='skype:$username?$type'><span class='skype_icon $_class_user $_class_size'><img src='$_icon' width='$size' height='$size' /></span><span class='skype_name $_class_user $_class_size'>$name</span></a></div>";
+		return "<div class='skype $type $_class_user $_class_size'><a class='skype_link $_class_user $_class_size' href='skype:$username?$type' alt='$_alt' title='$_alt'><span class='skype_icon $_class_user $_class_size'><img src='$_icon' width='$size' height='$size' /></span><span class='skype_name $_class_user $_class_size'>$name</span></a></div>";
 	}
 
 	// make a cURL request to the API
@@ -272,6 +286,14 @@ class WPSkypeStatus{
 	// function for usort() to organise array by subarray members
 	private function sort_priority($a, $b) {
 		return strcmp($a[2], $b[2]);
+	}
+	
+	private function str_replace_first($search, $replace, $subject) {
+		$pos = strpos($subject, $search);
+		if ($pos !== false) {
+			$subject = substr_replace($subject, $replace, $pos, strlen($search));
+		}
+		return $subject;
 	}
 
 	// enable debugging
