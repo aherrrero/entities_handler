@@ -63,11 +63,11 @@
 <li><a href="#debugging-1">Debugging</a></li>
 </ul>
 </li>
-</ul><h2>Standard PHP</h2>
+</ul><h2 id='standard-php'>Standard PHP</h2>
 
 <p>In order to use WPSkypeStatus as a normal PHP class you don't have to change anything - it'll work straight out of the box. If you want, you can change the values in <code>conf.php</code> to make adding Skype links even easier by not having to use the array of parameters each time. If you're rarely going to be re-using the same account for links, though, changing <code>conf.php</code> won't make much difference for you.</p>
 
-<h3>Installation</h3>
+<h3 id='installation'>Installation</h3>
 
 <ol>
 <li>
@@ -80,7 +80,7 @@
 <span class="nv">$WPSS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WPSkypeStatus</span><span class="p">();</span>
 </pre></div>
 
-<h3>Usage</h3>
+<h3 id='usage'>Usage</h3>
 
 <ol>
 <li>Install as <a href="#installation">described above</a>
@@ -98,7 +98,7 @@
 
 <p>Any arguments you omit will take their values from the defaults in <code>conf.php</code>.</p>
 
-<h3>Changing Defaults</h3>
+<h3 id='changing-defaults'>Changing Defaults</h3>
 
 <ol>
 <li>Open <code>_admin/conf.php</code> in your favourite text editor</li>
@@ -110,7 +110,7 @@
 
 <p>If there's something that currently can't be changed but you think would benefit from being in <code>conf.php</code> then <a href="https://github.com/Ultrabenosaurus/WPSkypeStatus/issues">open an issue</a> - after checking it hasn't already been requested - and I'll have a think about it.</p>
 
-<h3>Debugging</h3>
+<h3 id='debugging'>Debugging</h3>
 
 <ol>
 <li>Install as <a href="#installation">described above</a>
@@ -152,11 +152,11 @@
 </li>
 </ul><p>If you want to retrieve the current settings, without turning debugging on, just use <code>$WPSS-&gt;get_current_settings()</code> to return a PHP array of the current settings.</p>
 
-<h2>WordPress Plugin</h2>
+<h2 id='wordpress-plugin'>WordPress Plugin</h2>
 
 <p>Using WPSkypeStatus as a WordPress plugin requires absolutely no customisation either - the same files, functions and settings work just as they would when used via a normal PHP <code>include</code>. However, they also provide you with a shortcode so that you don't have to edit template files, as well as settings pages in the Tools section of <code>wp-admin</code> so you don't have to manually edit <code>conf.php</code> to change defaults.</p>
 
-<h3>Installation</h3>
+<h3 id='installation-1'>Installation</h3>
 
 <ol>
 <li>
@@ -166,7 +166,7 @@
 <li>Go to your Installed Plugins page in <code>wp-admin</code> and activate the plugin</li>
 </ol><p>When the plugin is loaded for the first time, it will create its settings table in your WordPress database and populate it with the values from <code>conf.php</code>. You can change these settings either in <code>conf.php</code> before activating the plugin or via the settings pages in <code>wp-admin</code> after activation.</p>
 
-<h3>Usage</h3>
+<h3 id='usage-1'>Usage</h3>
 
 <ol>
 <li>Install as <a href="#installation-1">described above</a>
@@ -180,7 +180,7 @@
 <pre><code>[skype username="echo123" name="Geoffrey" type="video"]
 </code></pre>
 
-<h3>Changing Settings</h3>
+<h3 id='changing-settings'>Changing Settings</h3>
 
 <p>There are two ways to set the defaults when using as a WordPress plugin:</p>
 
@@ -189,7 +189,7 @@
 <li>Set your defaults in <code>conf.php</code> before activating the plugin</li>
 </ul><p>After initial activation, changing the values in <code>conf.php</code> will have no effect on the settings used unless you delete the <code>skype_settings</code> table from your WordPress database.</p>
 
-<h3>Debugging</h3>
+<h3 id='debugging-1'>Debugging</h3>
 
 <p>The shortcode does not support toggling the debugging state of WPSkypeStatus and I don't plan to implement that at any time - it's too dangerous if your content editors have easy access to this. As such you will have to enable/disable debugging via PHP in your template files as <a href="#debugging">described above</a></p>
 
