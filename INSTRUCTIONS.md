@@ -7,14 +7,17 @@ This file aims to give you instructions on how to install and use the WPSkypeSta
 * [Standard PHP](#standard-php)
     * [Installation](#installaion)
     * [Usage](#usage)
+    * [Changing Defaults](#changing-defaults)
     * [Debugging](#debugging)
 * [WordPress Plugin](#wordpress-plugin)
     * [Installaion](#installation-1)
     * [Usage](#usage-1)
+    * [Changing Settings](#changing-settings)
+    * [Debugging](#debugging-1)
 
 ## Standard PHP ##
 
-In order to use WPSkypeStatus as a normal PHP class you don't have to change anything - it'll work straight out of the box. If you want, you can change the values in `conf.php` to make adding Skype links even easier by not having to use the array of parameters each time.
+In order to use WPSkypeStatus as a normal PHP class you don't have to change anything - it'll work straight out of the box. If you want, you can change the values in `conf.php` to make adding Skype links even easier by not having to use the array of parameters each time. If you're rarely going to be re-using the same account for links, though, changing `conf.php` won't make much difference for you.
 
 ### Installation ###
 
@@ -31,7 +34,7 @@ $WPSS = new WPSkypeStatus();
 
 ### Usage ###
 
-1. Install as described above
+1. Install as [described above](#installaion)
 2. Echo the non-static `skype()` function to display a link with default settings
 3. Use the optional associative array to change the link that's displayed
 
@@ -61,7 +64,7 @@ If there's something that currently can't be changed but you think would benefit
 
 ### Debugging ###
 
-1. Install as described above
+1. Install as [described above](#installaion)
 2. Call the non-static `set_debug($state, $return, $json)` function to toggle debugging
 3. Use `$WPSS->skype()` as you would normally
 4. Look at all the pretty debug info you get
@@ -93,6 +96,41 @@ If you want to retrieve the current settings, without turning debugging on, just
 
 ## WordPress Plugin ##
 
+Using WPSkypeStatus as a WordPress plugin requires absolutely no customisation either - the same files, functions and settings work just as they would when used via a normal PHP `include`. However, they also provide you with a shortcode so that you don't have to edit template files, as well as settings pages in the Tools section of `wp-admin` so you don't have to manually edit `conf.php` to change defaults.
+
 ### Installation ###
 
+1. [Download](https://github.com/Ultrabenosaurus/WPSkypeStatus/zipball/master) the project
+2. Extract to `<wp-root>/wp-content/plugins/WPSkypeStatus/`
+3. Go to your Installed Plugins page in `wp-admin` and activate the plugin
+
+
+When the plugin is loaded for the first time, it will create its settings table in your WordPress database and populate it with the values from `conf.php`. You can change these settings either in `conf.php` before activating the plugin or via the settings pages in `wp-admin` after activation.
+
 ### Usage ###
+
+1. Install as [described above](#installaion-1)
+2. Use the `[skype]` shortcode anywhere WordPress allows shortcodes
+3. Use the WordPress `do_shortcode()` function in your template files
+4. Instantiate a WPSkypeStatus object and use the public `skype()` function as [described above](#usage)
+
+**Shortcode Example**
+
+```
+[skype username="echo123" name="Geoffrey" type="video"]
+```
+
+### Changing Settings ###
+
+There are two ways to set the defaults when using as a WordPress plugin:
+
+* Go to Tools > Skype Options in `wp-admin` after activating the plugin
+* Set your defaults in `conf.php` before activating the plugin
+
+After initial activation, changing the values in `conf.php` will have no effect on the settings used unless you delete the `skype_settings` table from your WordPress database.
+
+### Debugging ###
+
+The shortcode does not support toggling the debugging state of WPSkypeStatus and I don't plan to implement that at any time - it's too dangerous if your content editors have easy access to this. As such you will have to enable/disable debugging via PHP in your template files as [described above](#debugging)
+
+I have not tested debugging in WordPress as yet so I cannot confirm if it works as expected or not. I imagine if nothing is displayed it will be a result of the action hooks I used and I won't know how to get around that. I don't expect any problems, though, as the debugging will happen when the shortcode is parsed which will be in the page rather than the head.
