@@ -361,6 +361,7 @@ function skype_prio_page(){
 		the more preferred it will be. This weighting is used when parsing backup accounts in order to provide your users with<br />
 		someone who is as close to 'online' - and thus as available to talk - as possible.
 	</p>
+	<p>Drag the list of statuses below to re-order them, then click Save Changes.</p>
 	<form name='skype_settings' id='skype_settings' action='' method='POST'>
 		<table>
 			<tbody class='form-table'>

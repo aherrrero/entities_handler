@@ -2,7 +2,7 @@
 
 Initially to be a WordPress plugin, now being written to work as either a WP plugin or in any PHP project via a single `include` statement.
 
-The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd).(16|32|64).png` with 16px being the default size. [Originals can be found here](http://vector.us/browse/253348/skype_status_icons).
+The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd|group).(16|32|64).png` with 16px being the default size. [Originals can be found here](http://vector.us/browse/253348/skype_status_icons).
 
 ## About ##
 
@@ -10,18 +10,22 @@ You can manually layout and write your own Skype Call links, but doing that ever
 
 Thus, I decided to make a simple PHP Class that will create structured Skype call links complete with icons and classes for styling - works as both a normal PHP `include` or as a WordPress plugin!
 
+## Instructions ##
+
+For instructions on how to use this project, please see the included [INSTRUCTIONS.md file](/INSTRUCTIONS.md) for details.
+
 ## To Do ##
 
-In the order I'm going to work on them, the things I want to achieve before labelling this project as having reached version 1.0 - 
+In the order I'm going to work on them, the things I want to achieve before labelling this project as having reached version 1.0 -
 
-1. PHP usage instructions
-2. WP usage instructions
-3. GitHub Pages site
+1. GitHub Pages site
 
 Things for after version 1.0 - 
 
-1. image filename pattern customisation
-2. import/export to conf.php in WP admin
+1. Image filename pattern customisation
+2. Import/export to conf.php in WP admin
+3. Ability to create preset link parameters
+4. Template-able link HTML
 
 ## License ##
 

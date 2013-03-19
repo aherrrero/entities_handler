@@ -3,7 +3,7 @@
  * Plugin Name: WPSkypeStatus
  * Description: A simple way to add status-aware Skype links to your site.
  * Author: Dan Bennett
- * Version: 0.9.2
+ * Version: 1.0.0
  */
 
 include 'skype.php';
