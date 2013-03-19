@@ -28,172 +28,44 @@
         </ul>
       </header>
       <section>
-        <h1>Usage Instructions</h1>
+        <h1>WPSkypeStatus</h1>
 
-<p>This file aims to give you instructions on how to install and use the WPSkypeStatus project - either as a normal PHP class or as WordPress plugin.</p>
+<p>Initially to be a WordPress plugin, now being written to work as either a WP plugin or in any PHP project via a single <code>include</code> statement.</p>
 
-<h2>Skype Setup</h2>
+<p>The images I use are square resolutions, named according to status and size as <code>(online|offline|away|dnd|group).(16|32|64).png</code> with 16px being the default size. <a href="http://vector.us/browse/253348/skype_status_icons">Originals can be found here</a>.</p>
 
-<p><strong>REQUIRED regardless of whether you're using this in WordPress or not</strong></p>
+<h2>About</h2>
 
-<p>In order for your status to be determined you'll need to change your account settings to allow your status to be seen publicly. To do so, open the Skype application your computer and go to Tools &gt; Options &gt; Privacy &gt; Show Advanced Options and tick the "Allow my online status to be shown on the web" checkbox as shown in this image:</p>
+<p>You can manually layout and write your own Skype Call links, but doing that every time can be a hassle. The new Skype URI builder creates the link for you, including pulling the images from the Skype servers for you, but doesn't allow for any sort of differentiation between your Skype statuses - your users won't know if you're online, offline, away, etc.</p>
 
-<p><img src="/images/status-settings.png" alt="Skype Status Settings"></p>
+<p>Thus, I decided to make a simple PHP Class that will create structured Skype call links complete with icons and classes for styling - works as both a normal PHP <code>include</code> or as a WordPress plugin!</p>
 
-<h2>Contents</h2>
+<h2>Instructions</h2>
 
-<ul>
-<li>
-<a href="#standard-php">Standard PHP</a>
+<p>For instructions on how to use this project, please see the included <a href="/instructions.html">instructions page</a> for details.</p>
 
-<ul>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#usage">Usage</a></li>
-<li><a href="#changing-defaults">Changing Defaults</a></li>
-<li><a href="#debugging">Debugging</a></li>
-</ul>
-</li>
-<li>
-<a href="#wordpress-plugin">WordPress Plugin</a>
+<h2>To Do</h2>
 
-<ul>
-<li><a href="#installation-1">Installation</a></li>
-<li><a href="#usage-1">Usage</a></li>
-<li><a href="#changing-settings">Changing Settings</a></li>
-<li><a href="#debugging-1">Debugging</a></li>
-</ul>
-</li>
-</ul><h2>Standard PHP</h2>
-
-<p>In order to use WPSkypeStatus as a normal PHP class you don't have to change anything - it'll work straight out of the box. If you want, you can change the values in <code>conf.php</code> to make adding Skype links even easier by not having to use the array of parameters each time. If you're rarely going to be re-using the same account for links, though, changing <code>conf.php</code> won't make much difference for you.</p>
-
-<h3>Installation</h3>
+<p>In the order I'm going to work on them, the things I want to achieve before labelling this project as having reached version 1.0 -</p>
 
 <ol>
-<li>
-<a href="https://github.com/Ultrabenosaurus/WPSkypeStatus/zipball/master">Download</a> and extract the project</li>
-<li>Copy <code>skype.php</code>, <code>_admin/conf.php</code> and the <code>images/</code> folder to where you keep external libraries</li>
-<li>Include <code>skype.php</code> and instantiate a new <code>WPSkypeStatus</code> object</li>
-</ol><p><strong>Example</strong></p>
-
-<div class="highlight"><pre><span class="k">include</span> <span class="s1">'lib/skype.php'</span><span class="p">;</span>
-<span class="nv">$WPSS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WPSkypeStatus</span><span class="p">();</span>
-</pre></div>
-
-<h3>Usage</h3>
+<li>GitHub Pages site</li>
+</ol><p>Things for after version 1.0 - </p>
 
 <ol>
-<li>Install as <a href="#installation">described above</a>
-</li>
-<li>Echo the non-static <code>skype()</code> function to display a link with default settings</li>
-<li>Use the optional associative array to change the link that's displayed</li>
-</ol><p><strong>Example</strong></p>
+<li>Image filename pattern customisation</li>
+<li>Import/export to conf.php in WP admin</li>
+<li>Ability to create preset link parameters</li>
+<li>Template-able link HTML</li>
+</ol><h2>License</h2>
 
-<div class="highlight"><pre><span class="nv">$_args</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'echo123'</span><span class="p">,</span>
-    <span class="s1">'size'</span> <span class="o">=&gt;</span> <span class="s1">'32'</span>
-<span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$WPSS</span><span class="o">-&gt;</span><span class="na">skype</span><span class="p">(</span><span class="nv">$_args</span><span class="p">);</span>
-</pre></div>
-
-<p>Any arguments you omit will take their values from the defaults in <code>conf.php</code>.</p>
-
-<h3>Changing Defaults</h3>
-
-<ol>
-<li>Open <code>_admin/conf.php</code> in your favourite text editor</li>
-<li>Alter the values you want to change</li>
-<li>Save the file</li>
-</ol><p>Next time you use WPSkypeStatus (probably when you refresh the page you're working on) anywhere that uses a default value from <code>conf.php</code> will use the new values you just set. Simple.</p>
-
-<p>If you want to change something that's not in <code>conf.php</code> - though I don't know why you would - you'll have to look inside <code>skype.php</code> and change it there. This is discouraged, however, as it complicates things if ever you try to upgrade WPSkypeStatus and means other people working on the project may not know where to go if they need to change it back.</p>
-
-<p>If there's something that currently can't be changed but you think would benefit from being in <code>conf.php</code> then <a href="https://github.com/Ultrabenosaurus/WPSkypeStatus/issues">open an issue</a> - after checking it hasn't already been requested - and I'll have a think about it.</p>
-
-<h3>Debugging</h3>
-
-<ol>
-<li>Install as <a href="#installation">described above</a>
-</li>
-<li>Call the non-static <code>set_debug($state, $return, $json)</code> function to toggle debugging</li>
-<li>Use <code>$WPSS-&gt;skype()</code> as you would normally</li>
-<li>Look at all the pretty debug info you get</li>
-<li>Turn debug off again when you don't need it with <code>$WPSS-&gt;set_debug(false)</code>
-</li>
-</ol><p><strong>Example</strong></p>
-
-<div class="highlight"><pre><span class="nv">$_settings</span> <span class="o">=</span> <span class="nv">$WPSS</span><span class="o">-&gt;</span><span class="na">set_debug</span><span class="p">(</span><span class="k">true</span><span class="p">,</span> <span class="k">true</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
-<span class="k">echo</span> <span class="s2">"&lt;pre&gt;"</span> <span class="o">.</span> <span class="nb">print_r</span><span class="p">(</span><span class="nv">$_settings</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"&lt;/pre&gt;"</span><span class="p">;</span>
-
-<span class="nv">$_args</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'echo123'</span><span class="p">,</span>
-    <span class="s1">'size'</span> <span class="o">=&gt;</span> <span class="s1">'32'</span>
-<span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$WPSS</span><span class="o">-&gt;</span><span class="na">skype</span><span class="p">(</span><span class="nv">$_args</span><span class="p">);</span>
-
-<span class="nv">$WPSS</span><span class="o">-&gt;</span><span class="na">set_debug</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
-</pre></div>
-
-<p>All parameters are boolean and optional:</p>
+<p>As usual with my work, this project is available under the BSD 3-Clause license. In short, you can do whatever you want with this code as long as:</p>
 
 <ul>
-<li>
-<code>$state</code> - turns debugging on, <code>true</code>, or off, <code>false</code>
-</li>
-<li>
-<code>$return</code> - whether to return, <code>true</code>, or echo, <code>false</code>, the settings in use
-
-<ul>
-<li>only affects the <code>set_debug()</code> call, no subsequent debugging</li>
-</ul>
-</li>
-<li>
-<code>$json</code> - whether debugging should be JSON strings, <code>true</code>, or PHP arrays, <code>false</code>
-</li>
-</ul><p>If you want to retrieve the current settings, without turning debugging on, just use <code>$WPSS-&gt;get_current_settings()</code> to return a PHP array of the current settings.</p>
-
-<h2>WordPress Plugin</h2>
-
-<p>Using WPSkypeStatus as a WordPress plugin requires absolutely no customisation either - the same files, functions and settings work just as they would when used via a normal PHP <code>include</code>. However, they also provide you with a shortcode so that you don't have to edit template files, as well as settings pages in the Tools section of <code>wp-admin</code> so you don't have to manually edit <code>conf.php</code> to change defaults.</p>
-
-<h3>Installation</h3>
-
-<ol>
-<li>
-<a href="https://github.com/Ultrabenosaurus/WPSkypeStatus/zipball/master">Download</a> the project</li>
-<li>Extract to <code>&lt;wp-root&gt;/wp-content/plugins/WPSkypeStatus/</code>
-</li>
-<li>Go to your Installed Plugins page in <code>wp-admin</code> and activate the plugin</li>
-</ol><p>When the plugin is loaded for the first time, it will create its settings table in your WordPress database and populate it with the values from <code>conf.php</code>. You can change these settings either in <code>conf.php</code> before activating the plugin or via the settings pages in <code>wp-admin</code> after activation.</p>
-
-<h3>Usage</h3>
-
-<ol>
-<li>Install as <a href="#installation-1">described above</a>
-</li>
-<li>Use the <code>[skype]</code> shortcode anywhere WordPress allows shortcodes</li>
-<li>Use the WordPress <code>do_shortcode()</code> function in your template files</li>
-<li>Instantiate a WPSkypeStatus object and use the public <code>skype()</code> function as <a href="#usage">described above</a>
-</li>
-</ol><p><strong>Shortcode Example</strong></p>
-
-<pre><code>[skype username="echo123" name="Geoffrey" type="video"]
-</code></pre>
-
-<h3>Changing Settings</h3>
-
-<p>There are two ways to set the defaults when using as a WordPress plugin:</p>
-
-<ul>
-<li>Go to Tools &gt; Skype Options in <code>wp-admin</code> after activating the plugin</li>
-<li>Set your defaults in <code>conf.php</code> before activating the plugin</li>
-</ul><p>After initial activation, changing the values in <code>conf.php</code> will have no effect on the settings used unless you delete the <code>skype_settings</code> table from your WordPress database.</p>
-
-<h3>Debugging</h3>
-
-<p>The shortcode does not support toggling the debugging state of WPSkypeStatus and I don't plan to implement that at any time - it's too dangerous if your content editors have easy access to this. As such you will have to enable/disable debugging via PHP in your template files as <a href="#debugging">described above</a></p>
-
-<p>I have not tested debugging in WordPress as yet so I cannot confirm if it works as expected or not. I imagine if nothing is displayed it will be a result of the action hooks I used and I won't know how to get around that. I don't expect any problems, though, as the debugging will happen when the shortcode is parsed which will be in the page rather than the head.</p>
+<li>I am always recognised as the original author.</li>
+<li>I am not used to advertise any derivative works without prior permission.</li>
+<li>You include a copy of said license and attribution with any and all redistributions of this code, including derivative works.</li>
+</ul><p>For more details, read the included <a href="https://github.com/Ultrabenosaurus/WPSkypeStatus/blob/master/LICENSE.md">LICENSE.md</a> file or read about it on <a href="http://opensource.org/licenses/BSD-3-Clause">opensource.org</a>.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/Ultrabenosaurus">Ultrabenosaurus</a></p>
