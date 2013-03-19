@@ -10,7 +10,7 @@ This file aims to give you instructions on how to install and use the WPSkypeSta
     * [Changing Defaults](#changing-defaults)
     * [Debugging](#debugging)
 * [WordPress Plugin](#wordpress-plugin)
-    * [Installaion](#installation-1)
+    * [Installation](#installation-1)
     * [Usage](#usage-1)
     * [Changing Settings](#changing-settings)
     * [Debugging](#debugging-1)
@@ -109,7 +109,7 @@ When the plugin is loaded for the first time, it will create its settings table 
 
 ### Usage ###
 
-1. Install as [described above](#installaion-1)
+1. Install as [described above](#installation-1)
 2. Use the `[skype]` shortcode anywhere WordPress allows shortcodes
 3. Use the WordPress `do_shortcode()` function in your template files
 4. Instantiate a WPSkypeStatus object and use the public `skype()` function as [described above](#usage)
