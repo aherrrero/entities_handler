@@ -16,11 +16,7 @@ For instructions on how to use this project, please see the included [INSTRUCTIO
 
 ## To Do ##
 
-In the order I'm going to work on them, the things I want to achieve before labelling this project as having reached version 1.0 -
-
-1. GitHub Pages site
-
-Things for after version 1.0 - 
+Things to work on after version 1.0 release -
 
 1. Image filename pattern customisation
 2. Import/export to conf.php in WP admin
