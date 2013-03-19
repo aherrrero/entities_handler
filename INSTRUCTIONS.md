@@ -2,6 +2,14 @@
 
 This file aims to give you instructions on how to install and use the WPSkypeStatus project - either as a normal PHP class or as WordPress plugin.
 
+## Skype Setup ##
+
+**REQUIRED regardless of whether you're using this in WordPress or not**
+
+In order for your status to be determined you'll need to change your account settings to allow your status to be seen publicly. To do so, open the Skype application your computer and go to Tools > Options > Privacy > Show Advanced Options and tick the "Allow my online status to be shown on the web" checkbox as shown in this image:
+
+![Skype Status Settings](/images/status-settings.png)
+
 ## Contents ##
 
 * [Standard PHP](#standard-php)
