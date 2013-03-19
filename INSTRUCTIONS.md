@@ -5,7 +5,7 @@ This file aims to give you instructions on how to install and use the WPSkypeSta
 ## Contents ##
 
 * [Standard PHP](#standard-php)
-    * [Installation](#installaion)
+    * [Installation](#installation)
     * [Usage](#usage)
     * [Changing Defaults](#changing-defaults)
     * [Debugging](#debugging)
@@ -34,7 +34,7 @@ $WPSS = new WPSkypeStatus();
 
 ### Usage ###
 
-1. Install as [described above](#installaion)
+1. Install as [described above](#installation)
 2. Echo the non-static `skype()` function to display a link with default settings
 3. Use the optional associative array to change the link that's displayed
 
@@ -64,7 +64,7 @@ If there's something that currently can't be changed but you think would benefit
 
 ### Debugging ###
 
-1. Install as [described above](#installaion)
+1. Install as [described above](#installation)
 2. Call the non-static `set_debug($state, $return, $json)` function to toggle debugging
 3. Use `$WPSS->skype()` as you would normally
 4. Look at all the pretty debug info you get
