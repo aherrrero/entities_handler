@@ -1,5 +1,7 @@
 # WPSkypeStatus #
 
+**Version 1.0**
+
 Initially to be a WordPress plugin, now being written to work as either a WP plugin or in any PHP project via a single `include` statement.
 
 The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd|group).(16|32|64).png` with 16px being the default size. [Originals can be found here](http://vector.us/browse/253348/skype_status_icons).
@@ -18,10 +20,9 @@ For instructions on how to use this project, please see the included [INSTRUCTIO
 
 Things to work on after version 1.0 release -
 
-1. Image filename pattern customisation
-2. Import/export to conf.php in WP admin
-3. Ability to create preset link parameters
-4. Template-able link HTML
+1. Import/export to conf.php in WP admin
+2. Ability to create preset link parameters
+3. Template-able link HTML
 
 ## License ##
 
