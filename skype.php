@@ -160,9 +160,9 @@ class WPSkypeStatus{
 	private function create_wp_settings(){
 		global $wpdb;
 		// check for table
-		$sql = "SHOW TABLES LIKE 'skype_settings';";
+		$sql = "SELECT `setting_name` FROM `skype_settings`;";
 		$wpdb->query($sql);
-		if($wpdb->num_rows > 0){
+		if($wpdb->num_rows < 3){
 			// include conf.php to get defaults
 			include $this->dirPath.implode(DIRECTORY_SEPARATOR, array('_admin', 'conf.php'));
 			// make the table
@@ -242,7 +242,7 @@ class WPSkypeStatus{
 	}
 
 	// update settings - currently doesn't allow adding new settings
-	public function set_wp_settings($opts = null){
+	public function update_wp_settings($opts = null){
 		global $wpdb;
 		// check an array was passed
 		if(is_array($opts)){
