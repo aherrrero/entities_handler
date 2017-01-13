@@ -1,16 +1,16 @@
-# WPSkypeStatus #
+# WP_ABC_Handler #
 
 **Version 1.0**
 
-Initially to be a WordPress plugin, now being written to work as either a WP plugin or in any PHP project via a single `include` statement.
+  Still under construction. To be used in Wordpress via a PLUGIN installation.
 
 The images I use are square resolutions, named according to status and size as `(online|offline|away|dnd|group).(16|32|64).png` with 16px being the default size. [Originals can be found here](http://vector.us/browse/253348/skype_status_icons).
 
 ## About ##
 
-You can manually layout and write your own Skype Call links, but doing that every time can be a hassle. The new Skype URI builder creates the link for you, including pulling the images from the Skype servers for you, but doesn't allow for any sort of differentiation between your Skype statuses - your users won't know if you're online, offline, away, etc.
+Create a WP admin page created with external parameters. IT provides a full browsing, search and sort of records ansd creation-edition-deletion.
 
-Thus, I decided to make a simple PHP Class that will create structured Skype call links complete with icons and classes for styling - works as both a normal PHP `include` or as a WordPress plugin!
+works as both a normal PHP `include` or as a WordPress plugin!
 
 ## Instructions ##
 
